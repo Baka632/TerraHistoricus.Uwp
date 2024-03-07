@@ -42,9 +42,9 @@
             </GridView.Resources>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="thModels:ComicInfo">
-                    <Grid Padding="5" Background="Transparent">
+                    <Grid Padding="5,0,5,0" Background="Transparent">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="200" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
@@ -61,14 +61,7 @@
                             </Image.Source>
                         </Image>
 
-                        <Grid Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock
                                 Grid.Row="0"
                                 FontWeight="SemiBold"
@@ -96,7 +89,7 @@
                                 Text="{x:Bind x:String.Join(' / ', Authors)}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="Wrap" />
-                        </Grid>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
