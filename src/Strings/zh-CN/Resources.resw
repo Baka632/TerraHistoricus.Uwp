@@ -48,4 +48,10 @@
   <data name="ComicListNavViewItem.Content" xml:space="preserve">
     <value>漫画列表</value>
   </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>出现错误</value>
+  </data>
+  <data name="InternetErrorMessage" xml:space="preserve">
+    <value>请检查你的互联网连接。</value>
+  </data>
 </root>

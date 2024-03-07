@@ -15,6 +15,7 @@ internal static class CommonValues
     #endregion
 
     #region Cache Key
+    public const string ComicInfoCacheKey = "ComicInfo_CacheKey";
     #endregion
 
     #region Animation Key

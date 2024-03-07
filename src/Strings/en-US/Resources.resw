@@ -48,4 +48,10 @@
   <data name="ComicListNavViewItem.Content" xml:space="preserve">
     <value>Comic List</value>
   </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>An error occurred</value>
+  </data>
+  <data name="InternetErrorMessage" xml:space="preserve">
+    <value>Please check your Internet connection.</value>
+  </data>
 </root>

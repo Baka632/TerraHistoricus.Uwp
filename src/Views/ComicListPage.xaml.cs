@@ -7,8 +7,26 @@ namespace TerraHistoricus.Uwp.Views;
 /// </summary>
 public sealed partial class ComicListPage : Page
 {
+    public ComicListViewModel ViewModel { get; } = new ComicListViewModel();
+
     public ComicListPage()
     {
         this.InitializeComponent();
+        NavigationCacheMode = NavigationCacheMode.Enabled;
+    }
+
+    private void OnAlbumImageLoaded(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void OnContentGridViewItemClicked(object sender, ItemClickEventArgs e)
+    {
+
+    }
+
+    private async void OnPageLoaded(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.Initialize();
     }
 }
