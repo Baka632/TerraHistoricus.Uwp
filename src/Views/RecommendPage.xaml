@@ -2,6 +2,7 @@
     x:Class="TerraHistoricus.Uwp.Views.RecommendPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:Baka632.Library.Uwp.CSharp.Helpers"
     xmlns:helpersEx="using:TerraHistoricus.Uwp.Helpers"
@@ -76,14 +77,23 @@
                 VerticalAlignment="Center"
                 PointerEntered="OnRecommendComicGridPointerEntered"
                 PointerExited="OnRecommendComicGridPointerExited">
-                <Image
-                    x:Name="DesktopCover"
-                    Source="{x:Bind helpersEx:XamlHelperEx.ToBitmapImage(ViewModel.CurrentRecommendInfo.DesktopCoverUri), Mode=OneWay}"
-                    Stretch="UniformToFill" />
-                <Image
-                    x:Name="MobileCover"
-                    Source="{x:Bind helpersEx:XamlHelperEx.ToBitmapImage(ViewModel.CurrentRecommendInfo.MobileCoverUri), Mode=OneWay}"
-                    Stretch="Uniform" />
+                <Button
+                    Padding="0"
+                    contract7Present:CornerRadius="2"
+                    Background="Transparent"
+                    BorderThickness="0">
+                    <Grid>
+                        <Image
+                            x:Name="DesktopCover"
+                            Source="{x:Bind helpersEx:XamlHelperEx.ToBitmapImage(ViewModel.CurrentRecommendInfo.DesktopCoverUri), Mode=OneWay}"
+                            Stretch="UniformToFill" />
+                        <Image
+                            x:Name="MobileCover"
+                            Source="{x:Bind helpersEx:XamlHelperEx.ToBitmapImage(ViewModel.CurrentRecommendInfo.MobileCoverUri), Mode=OneWay}"
+                            Stretch="Uniform" />
+                    </Grid>
+                </Button>
+
                 <StackPanel
                     x:Name="RecommendInfoStackPanel"
                     MaxWidth="350"
@@ -96,7 +106,7 @@
                         <media:AcrylicBrush
                             AlwaysUseFallback="False"
                             BackgroundSource="Backdrop"
-                            TintColor="Gray"
+                            TintColor="{ThemeResource SystemChromeHighColor}"
                             TintOpacity="0.65" />
                     </StackPanel.Background>
                     <StackPanel.Resources>
