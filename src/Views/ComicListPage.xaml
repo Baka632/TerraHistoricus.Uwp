@@ -67,14 +67,19 @@
                                 FontWeight="SemiBold"
                                 MaxLines="2"
                                 Text="{x:Bind Title}"
-                                TextWrapping="Wrap" />
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap"
+                                ToolTipService.ToolTip="{x:Bind Title}" />
                             <TextBlock
                                 Grid.Row="1"
                                 FontSize="8"
                                 FontWeight="SemiBold"
                                 Foreground="#8f8f8f"
+                                MaxLines="2"
                                 Text="{x:Bind Subtitle}"
+                                TextTrimming="CharacterEllipsis"
                                 TextWrapping="Wrap"
+                                ToolTipService.ToolTip="{x:Bind Subtitle}"
                                 Visibility="{x:Bind helpers:XamlHelper.IsStringNullOrEmptyReverseVisibility(Subtitle)}" />
                             <StackPanel
                                 Grid.Row="2"
@@ -88,7 +93,8 @@
                                 MaxLines="2"
                                 Text="{x:Bind x:String.Join(' / ', Authors)}"
                                 TextTrimming="CharacterEllipsis"
-                                TextWrapping="Wrap" />
+                                TextWrapping="Wrap"
+                                ToolTipService.ToolTip="{x:Bind x:String.Join(' / ', Authors)}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
@@ -97,7 +103,6 @@
 
         <!--#region Loading & Error-->
         <ProgressRing
-            Grid.Row="1"
             Width="50"
             Height="50"
             HorizontalAlignment="Center"
@@ -105,7 +110,6 @@
             IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
         <StackPanel
-            Grid.Row="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Visibility="{x:Bind ViewModel.ErrorVisibility, Mode=OneWay}">

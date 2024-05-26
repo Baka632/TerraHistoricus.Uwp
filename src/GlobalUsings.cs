@@ -2,6 +2,7 @@
 global using System.Collections.Generic;
 global using System.IO;
 global using System.Linq;
+global using System.Threading.Tasks;
 global using System.Runtime.InteropServices.WindowsRuntime;
 global using Windows.Foundation;
 global using Windows.Foundation.Collections;
@@ -22,9 +23,10 @@ global using CommunityToolkit.Mvvm.Messaging.Messages;
 global using Baka632.Library.Uwp.CSharp.Helpers;
 
 global using TerraHistoricus.Api.Services;
+global using TerraHistoricus.Api.Models.Info;
+global using TerraHistoricus.Api.Models.Pages;
 global using TerraHistoricus.Api.Models.Comic;
 global using TerraHistoricus.Api.Models.Episode;
-global using TerraHistoricus.Api.Models.Pages;
 
 global using TerraHistoricus.Uwp.Views;
 global using TerraHistoricus.Uwp.Models;

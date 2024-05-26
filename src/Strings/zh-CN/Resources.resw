@@ -54,4 +54,7 @@
   <data name="InternetErrorMessage" xml:space="preserve">
     <value>请检查你的互联网连接。</value>
   </data>
+  <data name="RecommendPageNavViewItem.Content" xml:space="preserve">
+    <value>推荐</value>
+  </data>
 </root>

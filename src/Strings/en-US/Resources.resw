@@ -54,4 +54,7 @@
   <data name="InternetErrorMessage" xml:space="preserve">
     <value>Please check your Internet connection.</value>
   </data>
+  <data name="RecommendPageNavViewItem.Content" xml:space="preserve">
+    <value>Recommends</value>
+  </data>
 </root>

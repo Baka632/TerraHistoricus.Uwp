@@ -19,7 +19,7 @@ public sealed partial class MainPage : Page
         Window.Current.SetTitleBar(TitleBar);
 
         ContentFrameNavigationHelper = new NavigationHelper(ContentFrame);
-        ContentFrameNavigationHelper.Navigate(typeof(ComicListPage));
+        ContentFrameNavigationHelper.Navigate(typeof(RecommendPage));
         ContentFrame.Navigated += OnContentFrameNavigated;
 
         ChangeSelectedItemOfNavigationView();

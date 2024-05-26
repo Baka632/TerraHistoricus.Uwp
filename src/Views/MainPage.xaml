@@ -95,9 +95,16 @@
             </muxc:NavigationView.PaneToggleButtonStyle>
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem
+                    x:Name="RecommendPageItem"
+                    x:Uid="RecommendPageNavViewItem"
+                    AccessKey="R"
+                    AccessKeyInvoked="OnNavigationViewItemAccessKeyInvoked"
+                    Icon="SolidStar"
+                    Tag="RecommendPage" />
+                <muxc:NavigationViewItem
                     x:Name="ComicListItem"
                     x:Uid="ComicListNavViewItem"
-                    AccessKey="LB"
+                    AccessKey="L"
                     AccessKeyInvoked="OnNavigationViewItemAccessKeyInvoked"
                     Icon="Library"
                     Tag="ComicList" />

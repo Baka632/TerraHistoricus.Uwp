@@ -131,6 +131,7 @@
     <Compile Include="Models\ErrorInfo.cs" />
     <Compile Include="ViewModels\ComicListViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\RecommendViewModel.cs" />
     <Compile Include="Views\ComicDetailPage.xaml.cs">
       <DependentUpon>ComicDetailPage.xaml</DependentUpon>
     </Compile>
@@ -143,6 +144,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\MainPage.xaml.NavigationView.cs" />
     <Compile Include="Views\MainPage.xaml.TitleBar.cs" />
+    <Compile Include="Views\RecommendPage.xaml.cs">
+      <DependentUpon>RecommendPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -178,6 +182,10 @@
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\RecommendPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsPage.xaml">
       <SubType>Designer</SubType>

@@ -1,5 +1,6 @@
 ﻿using WUXCNavigationViewBackButtonVisible = Windows.UI.Xaml.Controls.NavigationViewBackButtonVisible;
 using MUXCNavigationViewBackButtonVisible = Microsoft.UI.Xaml.Controls.NavigationViewBackButtonVisible;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace TerraHistoricus.Uwp.Helpers;
 
@@ -79,5 +80,32 @@ public static class XamlHelperEx
             true => MUXCNavigationViewBackButtonVisible.Collapsed,
             _ => MUXCNavigationViewBackButtonVisible.Auto
         };
+    }
+
+    public static Uri ToUri(string value)
+    {
+        if (value is null)
+        {
+            return null;
+        }
+
+        return new Uri(value);
+    }
+
+    public static BitmapImage ToBitmapImage(string value)
+    {
+        return Uri.TryCreate(value, UriKind.Absolute, out Uri uri)
+            ? new BitmapImage(uri)
+            : null;
+    }
+
+    public static DateTimeOffset ToDateTimeOffset(long unixTimeSeconds)
+    {
+        return DateTimeOffset.FromUnixTimeSeconds(unixTimeSeconds);
+    }
+
+    public static string ToDateString(long unixTimeSeconds, string format)
+    {
+        return ToDateTimeOffset(unixTimeSeconds).ToString(format);
     }
 }

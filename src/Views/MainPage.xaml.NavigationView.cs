@@ -53,14 +53,10 @@ public partial class MainPage
         {
             ContentFrameNavigationHelper.Navigate(typeof(ComicListPage), transitionInfo: CommonValues.DefaultTransitionInfo);
         }
-        //else if (tag == "NowPlayingPage" && ContentFrame.CurrentSourcePageType != typeof(NowPlayingPage))
-        //{
-        //    NavigateToNowPlayingPage(true);
-        //}
-        //else if (tag == "NewsPage" && ContentFrame.CurrentSourcePageType != typeof(NewsPage))
-        //{
-        //    ContentFrameNavigationHelper.Navigate(typeof(NewsPage), transitionInfo: CommonValues.DefaultTransitionInfo);
-        //}
+        else if (tag == "RecommendPage" && ContentFrame.CurrentSourcePageType != typeof(RecommendPage))
+        {
+            ContentFrameNavigationHelper.Navigate(typeof(RecommendPage), transitionInfo: CommonValues.DefaultTransitionInfo);
+        }
         //else if (tag == "DownloadPage" && ContentFrame.CurrentSourcePageType != typeof(DownloadPage))
         //{
         //    ContentFrameNavigationHelper.Navigate(typeof(DownloadPage), transitionInfo: CommonValues.DefaultTransitionInfo);
@@ -78,10 +74,10 @@ public partial class MainPage
         {
             NavigationView.SelectedItem = ComicListItem;
         }
-        //else if (currentSourcePageType == typeof(NowPlayingPage))
-        //{
-        //    NavigationView.SelectedItem = NowPlayingPageItem;
-        //}
+        else if (currentSourcePageType == typeof(RecommendPage))
+        {
+            NavigationView.SelectedItem = RecommendPageItem;
+        }
         //else if (currentSourcePageType == typeof(DownloadPage))
         //{
         //    NavigationView.SelectedItem = DownloadPageItem;
