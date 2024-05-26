@@ -20,3 +20,6 @@ Windows 10 1703 (15063)
 
 ## 许可
 MIT 许可证
+
+## 另请参阅
+[TerraHistoricus.Api](https://github.com/Baka632/TerraHistoricus.Api)
