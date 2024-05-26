@@ -57,4 +57,10 @@
   <data name="RecommendPageNavViewItem.Content" xml:space="preserve">
     <value>推荐</value>
   </data>
+  <data name="OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="ReadComic.Text" xml:space="preserve">
+    <value>阅读</value>
+  </data>
 </root>

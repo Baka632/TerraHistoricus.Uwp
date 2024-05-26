@@ -129,6 +129,7 @@
     <Compile Include="Models\AppBackgroundMode.cs" />
     <Compile Include="Models\AppColorTheme.cs" />
     <Compile Include="Models\ErrorInfo.cs" />
+    <Compile Include="ViewModels\ComicDetailViewModel.cs" />
     <Compile Include="ViewModels\ComicListViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RecommendViewModel.cs" />

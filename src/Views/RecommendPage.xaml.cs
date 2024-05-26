@@ -9,8 +9,8 @@ namespace TerraHistoricus.Uwp.Views;
 /// </summary>
 public sealed partial class RecommendPage : Page
 {
-    private readonly CoreCursor buttonCursor = new(CoreCursorType.Hand, 0);
-    private CoreCursor cursorBeforePointerEntered = null;
+    private readonly static CoreCursor buttonCursor = new(CoreCursorType.Hand, 0);
+    private readonly static CoreCursor normalCursor = new(CoreCursorType.Arrow, 0);
     public RecommendViewModel ViewModel { get; } = new RecommendViewModel();
 
     public RecommendPage()
@@ -26,16 +26,25 @@ public sealed partial class RecommendPage : Page
 
     private void OnRecommendComicGridPointerEntered(object sender, PointerRoutedEventArgs e)
     {
-        cursorBeforePointerEntered = Window.Current.CoreWindow.PointerCursor;
         Window.Current.CoreWindow.PointerCursor = buttonCursor;
-
         ShowRecommendInfoStoryboard.Begin();
     }
 
     private void OnRecommendComicGridPointerExited(object sender, PointerRoutedEventArgs e)
     {
-        Window.Current.CoreWindow.PointerCursor = cursorBeforePointerEntered;
-
+        Window.Current.CoreWindow.PointerCursor = normalCursor;
         HideRecommendInfoStoryboard.Begin();
+    }
+
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+    {
+        base.OnNavigatingFrom(e);
+        Window.Current.CoreWindow.PointerCursor = normalCursor;
+    }
+
+    private void OnUpdatedRecommendInfoListViewItemClicked(object sender, ItemClickEventArgs e)
+    {
+        EpisodeUpdateInfo data = (EpisodeUpdateInfo)e.ClickedItem;
+        ViewModel.NavigateToEpisodeDetailPageCommand.Execute(data.EpisodeCid);
     }
 }

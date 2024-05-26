@@ -45,7 +45,7 @@ public sealed partial class RecommendViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task Refresh()
+    private async Task Refresh()
     {
         IsRefreshing = true;
         ErrorVisibility = Visibility.Collapsed;
@@ -66,6 +66,18 @@ public sealed partial class RecommendViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private void NavigateToComicDetailPage(string comicCid)
+    {
+        ContentFrameNavigationHelper.Navigate(typeof(ComicDetailPage), comicCid, transitionInfo: CommonValues.DefaultTransitionInfo);
+    }
+
+    [RelayCommand]
+    private async Task NavigateToEpisodeDetailPage(string comicCid)
+    {
+        await DisplayContentDialog("期数 CID", comicCid, "OK".GetLocalized());
+    }
+
     private void ShowInternetError(HttpRequestException ex)
     {
         ErrorVisibility = Visibility.Visible;
@@ -75,5 +87,21 @@ public sealed partial class RecommendViewModel : ObservableObject
             Message = "InternetErrorMessage".GetLocalized(),
             Exception = ex
         };
+    }
+
+    private static async Task DisplayContentDialog(string title, string message, string primaryButtonText = "", string closeButtonText = "")
+    {
+        await UIThreadHelper.RunOnUIThread(async () =>
+        {
+            ContentDialog contentDialog = new()
+            {
+                Title = title,
+                Content = message,
+                PrimaryButtonText = primaryButtonText,
+                CloseButtonText = closeButtonText
+            };
+
+            await contentDialog.ShowAsync();
+        });
     }
 }

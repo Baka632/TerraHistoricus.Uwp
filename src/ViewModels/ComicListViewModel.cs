@@ -72,6 +72,12 @@ public sealed partial class ComicListViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private static void NavigateToComicDetailPage(string comicCid)
+    {
+        ContentFrameNavigationHelper.Navigate(typeof(ComicDetailPage), comicCid);
+    }
+
     private void ShowInternetError(HttpRequestException ex)
     {
         ErrorVisibility = Visibility.Visible;

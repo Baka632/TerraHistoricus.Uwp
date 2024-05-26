@@ -81,7 +81,9 @@
                     Padding="0"
                     contract7Present:CornerRadius="2"
                     Background="Transparent"
-                    BorderThickness="0">
+                    BorderThickness="0"
+                    Command="{x:Bind ViewModel.NavigateToComicDetailPageCommand}"
+                    CommandParameter="{x:Bind ViewModel.CurrentRecommendInfo.ComicCid, Mode=OneWay}">
                     <Grid>
                         <Image
                             x:Name="DesktopCover"
@@ -140,6 +142,7 @@
                 Margin="0,0,10,0"
                 HorizontalAlignment="Right"
                 IsItemClickEnabled="True"
+                ItemClick="OnUpdatedRecommendInfoListViewItemClicked"
                 ItemsSource="{x:Bind ViewModel.CurrentUpdateInfos, Mode=OneWay}"
                 SelectionMode="None">
                 <ListView.ItemTemplate>

@@ -68,9 +68,9 @@ public partial class MainPage
     /// </summary>
     private void ChangeSelectedItemOfNavigationView()
     {
-        Type currentSourcePageType = ContentFrame.CurrentSourcePageType;
+        Type currentSourcePageType = ContentFrame.SourcePageType;
 
-        if (currentSourcePageType == typeof(ComicListPage) || currentSourcePageType == typeof(ComicDetailPage))
+        if (currentSourcePageType == typeof(ComicListPage))
         {
             NavigationView.SelectedItem = ComicListItem;
         }
@@ -78,22 +78,14 @@ public partial class MainPage
         {
             NavigationView.SelectedItem = RecommendPageItem;
         }
-        //else if (currentSourcePageType == typeof(DownloadPage))
-        //{
-        //    NavigationView.SelectedItem = DownloadPageItem;
-        //}
-        //else if (currentSourcePageType == typeof(NewsPage) || currentSourcePageType == typeof(NewsDetailPage))
-        //{
-        //    NavigationView.SelectedItem = NewsPageItem;
-        //}
+        else if (currentSourcePageType == typeof(ComicDetailPage))
+        {
+            NavigationView.SelectedItem = null;
+        }
         else if (currentSourcePageType == typeof(SettingsPage))
         {
             NavigationView.SelectedItem = NavigationView.SettingsItem;
         }
-        //else if (currentSourcePageType == typeof(SearchPage))
-        //{
-        //    NavigationView.SelectedItem = null;
-        //}
 #if DEBUG
         else
         {

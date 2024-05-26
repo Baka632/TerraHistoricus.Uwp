@@ -30,6 +30,7 @@ public sealed partial class MainPage : Page
     ~MainPage()
     {
         MainPageNavigationHelper.GoBackComplete -= OnMainPageGoBackComplete;
+        MainPageNavigationHelper.NavigationComplete -= OnMainPageNavigationComplete;
         MainPageNavigationHelper = null;
     }
 
@@ -37,14 +38,22 @@ public sealed partial class MainPage : Page
     {
         if (MainPageNavigationHelper is null)
         {
-            MainPageNavigationHelper = new NavigationHelper(Frame);
+            MainPageNavigationHelper = new NavigationHelper(Frame, true);
             MainPageNavigationHelper.GoBackComplete += OnMainPageGoBackComplete;
         }
     }
 
+    private void OnMainPageNavigationComplete(object sender, EventArgs e)
+    {
+        AppViewBackButtonVisibility backButtonVisibility = Frame.CanGoBack
+                ? AppViewBackButtonVisibility.Visible
+                : AppViewBackButtonVisibility.Collapsed;
+        SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = backButtonVisibility;
+    }
+
     private void OnMainPageGoBackComplete(object sender, EventArgs arg)
     {
-        AppViewBackButtonVisibility backButtonVisibility = ContentFrame.CanGoBack
+        AppViewBackButtonVisibility backButtonVisibility = Frame.CanGoBack
                 ? AppViewBackButtonVisibility.Visible
                 : AppViewBackButtonVisibility.Collapsed;
         SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = backButtonVisibility;
