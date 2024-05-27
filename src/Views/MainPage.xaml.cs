@@ -10,6 +10,8 @@ namespace TerraHistoricus.Uwp.Views;
 /// </summary>
 public sealed partial class MainPage : Page
 {
+    private SystemNavigationManager _systemNavigationManager;
+
     public MainViewModel ViewModel { get; } = new MainViewModel();
 
     public MainPage()
@@ -103,5 +105,25 @@ public sealed partial class MainPage : Page
                 Background = Resources["ApplicationPageBackgroundThemeBrush"] as Brush;
                 return true;
         }
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        _systemNavigationManager = SystemNavigationManager.GetForCurrentView();
+        _systemNavigationManager.BackRequested += OnSystemBackRequested;
+    }
+
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+    {
+        base.OnNavigatingFrom(e);
+
+        _systemNavigationManager.BackRequested -= OnSystemBackRequested;
+    }
+
+    private void OnSystemBackRequested(object sender, BackRequestedEventArgs e)
+    {
+        ContentFrameNavigationHelper.GoBack(e);
     }
 }
