@@ -63,6 +63,7 @@
                         x:Name="ComicCover"
                         Margin="0,0,10,0"
                         VerticalAlignment="Top"
+                        ImageOpened="OnComicCoverImageOpened"
                         Stretch="UniformToFill">
                         <Image.Source>
                             <BitmapImage UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(ViewModel.CurrentComicDetail.CoverUri), Mode=OneWay}" />
@@ -97,21 +98,21 @@
                                 BorderThickness="0.6" />
                             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                                 <SymbolIcon
-                                    Margin="0,0,5,0"
+                                    Margin="0,0,10,0"
                                     Symbol="Calendar"
                                     ToolTipService.ToolTip="日期" />
                                 <TextBlock Text="{x:Bind helpersEx:XamlHelperEx.ToDateString(ViewModel.CurrentComicDetail.UpdateTimestamp, 'yyyy/M/d'), Mode=OneWay}" />
                             </StackPanel>
                             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                                 <SymbolIcon
-                                    Margin="0,0,5,0"
-                                    Symbol="Contact"
+                                    Margin="0,0,10,0"
+                                    Symbol="People"
                                     ToolTipService.ToolTip="作者" />
                                 <TextBlock Text="{x:Bind x:String.Join('/', ViewModel.CurrentComicDetail.Authors), Mode=OneWay}" ToolTipService.ToolTip="{x:Bind x:String.Join('/', ViewModel.CurrentComicDetail.Authors), Mode=OneWay}" />
                             </StackPanel>
                             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                                 <SymbolIcon
-                                    Margin="0,0,5,0"
+                                    Margin="0,0,10,0"
                                     Symbol="Tag"
                                     ToolTipService.ToolTip="关键词" />
                                 <TextBlock Text="{x:Bind x:String.Join('、', ViewModel.CurrentComicDetail.Keywords), Mode=OneWay}" ToolTipService.ToolTip="{x:Bind x:String.Join('、', ViewModel.CurrentComicDetail.Keywords), Mode=OneWay}" />

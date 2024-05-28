@@ -28,7 +28,7 @@ public sealed partial class ComicListViewModel : ObservableObject
             }
             else
             {
-                IEnumerable<ComicInfo> comicInfos = await ComicService.GetAllComicAsync();
+                IEnumerable<ComicInfo> comicInfos = await GetComicsFromServer();
                 Comics = new ObservableCollection<ComicInfo>(comicInfos);
                 MemoryCacheHelper<ObservableCollection<ComicInfo>>.Default.Store(CommonValues.ComicInfoCacheKey, Comics);
             }
@@ -52,7 +52,7 @@ public sealed partial class ComicListViewModel : ObservableObject
         ErrorVisibility = Visibility.Collapsed;
         try
         {
-            IEnumerable<ComicInfo> comicInfos = await ComicService.GetAllComicAsync();
+            IEnumerable<ComicInfo> comicInfos = await GetComicsFromServer();
 
             if (Comics is null || !Comics.SequenceEqual(comicInfos))
             {
@@ -76,6 +76,27 @@ public sealed partial class ComicListViewModel : ObservableObject
     private static void NavigateToComicDetailPage(string comicCid)
     {
         ContentFrameNavigationHelper.Navigate(typeof(ComicDetailPage), comicCid);
+    }
+
+    private async static Task<IEnumerable<ComicInfo>> GetComicsFromServer()
+    {
+        List<ComicInfo> albums = await Task.Run(async () =>
+        {
+            List<ComicInfo> albumList = (await ComicService.GetAllComicAsync()).ToList();
+
+            for (int i = 0; i < albumList.Count; i++)
+            {
+                Uri fileCoverUri = await FileCacheHelper.GetComicCoverUriAsync(albumList[i]);
+                if (fileCoverUri != null)
+                {
+                    albumList[i] = albumList[i] with { CoverUri = fileCoverUri.ToString() };
+                }
+            }
+
+            return albumList;
+        });
+
+        return albums;
     }
 
     private void ShowInternetError(HttpRequestException ex)

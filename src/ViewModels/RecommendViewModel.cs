@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 namespace TerraHistoricus.Uwp.ViewModels;
 

@@ -1,5 +1,7 @@
 ﻿// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
+using Windows.Networking.Connectivity;
+
 namespace TerraHistoricus.Uwp.Views;
 
 /// <summary>
@@ -15,9 +17,24 @@ public sealed partial class ComicListPage : Page
         NavigationCacheMode = NavigationCacheMode.Enabled;
     }
 
-    private void OnAlbumImageLoaded(object sender, RoutedEventArgs e)
+    private async void OnComicCoverImageLoaded(object sender, RoutedEventArgs e)
     {
-        // TODO: 缓存封面图像
+        ConnectionCost costInfo = NetworkInformation.GetInternetConnectionProfile().GetConnectionCost();
+
+        if (costInfo?.NetworkCostType is NetworkCostType.Fixed or NetworkCostType.Variable)
+        {
+            return;
+        }
+
+        Image image = (Image)sender;
+        if (image.DataContext is ComicInfo info)
+        {
+            Uri fileCoverUri = await FileCacheHelper.GetComicCoverUriAsync(info);
+            if (fileCoverUri is null)
+            {
+                await FileCacheHelper.StoreComicCoverAsync(info);
+            }
+        }
     }
 
     private void OnContentGridViewItemClicked(object sender, ItemClickEventArgs e)

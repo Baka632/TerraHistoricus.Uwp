@@ -1,5 +1,4 @@
 ﻿using System.Net.Http;
-using System.Security.Cryptography;
 
 namespace TerraHistoricus.Uwp.ViewModels;
 
@@ -25,7 +24,22 @@ public sealed partial class ComicDetailViewModel : ObservableObject
 
         try
         {
-            CurrentComicDetail = await ComicService.GetComicDetailAsync(comicCid);
+            if (MemoryCacheHelper<ComicDetail>.Default.TryGetData(comicCid, out ComicDetail comicDetail))
+            {
+                CurrentComicDetail = comicDetail;
+            }
+            else
+            {
+                CurrentComicDetail = await ComicService.GetComicDetailAsync(comicCid);
+
+                Uri fileCoverUri = await FileCacheHelper.GetComicCoverUriAsync(CurrentComicDetail);
+                if (fileCoverUri != null)
+                {
+                    CurrentComicDetail = CurrentComicDetail with { CoverUri = fileCoverUri.ToString() };
+                }
+
+                MemoryCacheHelper<ComicDetail>.Default.Store(comicCid, CurrentComicDetail);
+            }
 
             ErrorVisibility = Visibility.Collapsed;
         }
