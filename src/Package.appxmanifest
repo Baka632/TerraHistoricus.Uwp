@@ -9,7 +9,7 @@
   <Identity
     Name="Baka632.TerraHistoricus.Uwp"
     Publisher="CN=Baka632"
-    Version="1.0.0.2" />
+    Version="1.0.0.3" />
 
   <mp:PhoneIdentity PhoneProductId="ee15e6c0-2bda-478c-b7f4-dc9f81e0187f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
