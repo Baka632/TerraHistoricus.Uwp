@@ -108,4 +108,9 @@ public static class XamlHelperEx
     {
         return ToDateTimeOffset(unixTimeSeconds).ToString(format);
     }
+
+    public static string ConcatStringWithSeperator(string value1, string value2, string separator)
+    {
+        return $"{value1}{separator}{value2}";
+    }
 }

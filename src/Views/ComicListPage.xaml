@@ -5,6 +5,7 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:Baka632.Library.Uwp.CSharp.Helpers"
+    xmlns:helpersEx="using:TerraHistoricus.Uwp.Helpers"
     xmlns:local="using:TerraHistoricus.Uwp.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -57,7 +58,7 @@
                             Loaded="OnAlbumImageLoaded"
                             Stretch="Uniform">
                             <Image.Source>
-                                <BitmapImage UriSource="{x:Bind CoverUri}" />
+                                <BitmapImage UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(CoverUri)}" />
                             </Image.Source>
                         </Image>
 

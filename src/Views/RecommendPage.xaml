@@ -85,14 +85,16 @@
                     Command="{x:Bind ViewModel.NavigateToComicDetailPageCommand}"
                     CommandParameter="{x:Bind ViewModel.CurrentRecommendInfo.ComicCid, Mode=OneWay}">
                     <Grid>
-                        <Image
-                            x:Name="DesktopCover"
-                            Source="{x:Bind helpersEx:XamlHelperEx.ToBitmapImage(ViewModel.CurrentRecommendInfo.DesktopCoverUri), Mode=OneWay}"
-                            Stretch="UniformToFill" />
-                        <Image
-                            x:Name="MobileCover"
-                            Source="{x:Bind helpersEx:XamlHelperEx.ToBitmapImage(ViewModel.CurrentRecommendInfo.MobileCoverUri), Mode=OneWay}"
-                            Stretch="Uniform" />
+                        <Image x:Name="DesktopCover" Stretch="UniformToFill">
+                            <Image.Source>
+                                <BitmapImage UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(ViewModel.CurrentRecommendInfo.DesktopCoverUri), Mode=OneWay}" />
+                            </Image.Source>
+                        </Image>
+                        <Image x:Name="MobileCover" Stretch="Uniform">
+                            <Image.Source>
+                                <BitmapImage UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(ViewModel.CurrentRecommendInfo.MobileCoverUri), Mode=OneWay}" />
+                            </Image.Source>
+                        </Image>
                     </Grid>
                 </Button>
 
