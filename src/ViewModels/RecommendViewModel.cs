@@ -28,8 +28,25 @@ public sealed partial class RecommendViewModel : ObservableObject
 
         try
         {
-            CurrentRecommendInfo = await InfoService.GetRecommendComicAsync();
-            CurrentUpdateInfos = await InfoService.GetRecentUpdateEpisodeAsync();
+            if (MemoryCacheHelper<RecommendComicInfo>.Default.TryGetData(CommonValues.RecommendComicInfoCacheKey, out RecommendComicInfo info))
+            {
+                CurrentRecommendInfo = info;
+            }
+            else
+            {
+                CurrentRecommendInfo = await InfoService.GetRecommendComicAsync();
+                MemoryCacheHelper<RecommendComicInfo>.Default.Store(CommonValues.RecommendComicInfoCacheKey, CurrentRecommendInfo);
+            }
+
+            if (MemoryCacheHelper<IEnumerable<EpisodeUpdateInfo>>.Default.TryGetData(CommonValues.EpisodeUpdateInfosCacheKey, out IEnumerable<EpisodeUpdateInfo> updateInfos))
+            {
+                CurrentUpdateInfos = updateInfos;
+            }
+            else
+            {
+                CurrentUpdateInfos = await InfoService.GetRecentUpdateEpisodeAsync();
+                MemoryCacheHelper<IEnumerable<EpisodeUpdateInfo>>.Default.Store(CommonValues.EpisodeUpdateInfosCacheKey, CurrentUpdateInfos);
+            }
 
             ErrorVisibility = Visibility.Collapsed;
         }
