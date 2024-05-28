@@ -63,4 +63,13 @@
   <data name="ReadComic.Text" xml:space="preserve">
     <value>阅读</value>
   </data>
+  <data name="AuthorIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="KeywordIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>关键词</value>
+  </data>
+  <data name="DateIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>日期</value>
+  </data>
 </root>

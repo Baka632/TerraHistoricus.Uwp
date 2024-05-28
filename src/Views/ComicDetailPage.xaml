@@ -100,23 +100,23 @@
                                 BorderThickness="0.6" />
                             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                                 <SymbolIcon
+                                    x:Uid="DateIcon"
                                     Margin="0,0,10,0"
-                                    Symbol="Calendar"
-                                    ToolTipService.ToolTip="日期" />
+                                    Symbol="Calendar" />
                                 <TextBlock Text="{x:Bind helpersEx:XamlHelperEx.ToDateString(ViewModel.CurrentComicDetail.UpdateTimestamp, 'yyyy/M/d'), Mode=OneWay}" />
                             </StackPanel>
                             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                                 <SymbolIcon
+                                    x:Uid="AuthorIcon"
                                     Margin="0,0,10,0"
-                                    Symbol="People"
-                                    ToolTipService.ToolTip="作者" />
+                                    Symbol="People" />
                                 <TextBlock Text="{x:Bind x:String.Join('/', ViewModel.CurrentComicDetail.Authors), Mode=OneWay}" ToolTipService.ToolTip="{x:Bind x:String.Join('/', ViewModel.CurrentComicDetail.Authors), Mode=OneWay}" />
                             </StackPanel>
                             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                                 <SymbolIcon
+                                    x:Uid="KeywordIcon"
                                     Margin="0,0,10,0"
-                                    Symbol="Tag"
-                                    ToolTipService.ToolTip="关键词" />
+                                    Symbol="Tag" />
                                 <TextBlock Text="{x:Bind x:String.Join('、', ViewModel.CurrentComicDetail.Keywords), Mode=OneWay}" ToolTipService.ToolTip="{x:Bind x:String.Join('、', ViewModel.CurrentComicDetail.Keywords), Mode=OneWay}" />
                             </StackPanel>
                         </StackPanel>
