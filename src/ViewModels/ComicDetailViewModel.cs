@@ -53,6 +53,12 @@ public sealed partial class ComicDetailViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private void NavigateToEpisodeReadPage(EpisodeInfo info)
+    {
+        MainPageNavigationHelper.Navigate(typeof(EpisodeReadPage), (CurrentComicDetail, info));
+    }
+
     private void ShowInternetError(HttpRequestException ex)
     {
         ErrorVisibility = Visibility.Visible;

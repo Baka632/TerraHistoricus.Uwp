@@ -18,8 +18,6 @@ public sealed partial class MainPage : Page
     {
         this.InitializeComponent();
 
-        Window.Current.SetTitleBar(TitleBar);
-
         ContentFrameNavigationHelper = new NavigationHelper(ContentFrame);
         ContentFrameNavigationHelper.Navigate(typeof(RecommendPage));
         ContentFrame.Navigated += OnContentFrameNavigated;
@@ -27,6 +25,8 @@ public sealed partial class MainPage : Page
         ChangeSelectedItemOfNavigationView();
         AutoSetMainPageBackground();
         ConfigureTitleBar();
+
+        NavigationCacheMode = NavigationCacheMode.Enabled;
     }
 
     ~MainPage()
@@ -41,6 +41,7 @@ public sealed partial class MainPage : Page
         if (MainPageNavigationHelper is null)
         {
             MainPageNavigationHelper = new NavigationHelper(Frame, true);
+            MainPageNavigationHelper.NavigationComplete += OnMainPageNavigationComplete;
             MainPageNavigationHelper.GoBackComplete += OnMainPageGoBackComplete;
         }
     }

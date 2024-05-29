@@ -139,6 +139,7 @@
     <Compile Include="Models\ErrorInfo.cs" />
     <Compile Include="ViewModels\ComicDetailViewModel.cs" />
     <Compile Include="ViewModels\ComicListViewModel.cs" />
+    <Compile Include="ViewModels\EpisodeReadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RecommendViewModel.cs" />
     <Compile Include="Views\ComicDetailPage.xaml.cs">
@@ -146,6 +147,9 @@
     </Compile>
     <Compile Include="Views\ComicListPage.xaml.cs">
       <DependentUpon>ComicListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EpisodeReadPage.xaml.cs">
+      <DependentUpon>EpisodeReadPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -186,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ComicListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EpisodeReadPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
