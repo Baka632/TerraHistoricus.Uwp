@@ -7,6 +7,7 @@
     xmlns:helpersEx="using:TerraHistoricus.Uwp.Helpers"
     xmlns:local="using:TerraHistoricus.Uwp.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.UI.Xaml.Media"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:thEpisodeModels="using:TerraHistoricus.Api.Models.Episode"
     xmlns:thPagesModels="using:TerraHistoricus.Api.Models.Pages"
@@ -56,19 +57,12 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock
-                Grid.Row="0"
-                Margin="0,0,0,10"
-                HorizontalAlignment="Center"
-                FontSize="18"
-                Text="{x:Bind helpersEx:XamlHelperEx.ConcatStringWithSeperator(ViewModel.CurrentEpisodeDetail.ShortTitle, ViewModel.CurrentEpisodeDetail.Title, ' '),Mode=OneWay}" />
-
             <ListView
-                Grid.Row="1"
-                Grid.RowSpan="2"
+                Grid.RowSpan="3"
                 IsItemClickEnabled="False"
                 ItemsSource="{x:Bind ViewModel.Pages, Mode=OneWay}"
-                SelectionMode="None">
+                SelectionMode="None"
+                Tapped="OnComicImageListTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="thPagesModels:PageDetail">
                         <StackPanel Margin="0,5,0,5">
@@ -93,14 +87,39 @@
             </ListView>
 
             <Grid
+                Grid.Row="0"
+                Padding="10"
+                CornerRadius="0,0,5,5"
+                Visibility="{x:Bind ViewModel.ShowEpisodeInfo, Mode=OneWay}">
+                <Grid.Background>
+                    <media:AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        TintColor="{ThemeResource SystemAccentColor}"
+                        TintOpacity="0.4" />
+                </Grid.Background>
+
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="18"
+                    Text="{x:Bind helpersEx:XamlHelperEx.ConcatStringWithSeperator(ViewModel.CurrentEpisodeDetail.ShortTitle, ViewModel.CurrentEpisodeDetail.Title, ' '),Mode=OneWay}" />
+            </Grid>
+
+            <Grid
                 Grid.Row="2"
-                Margin="11,0,0,10"
-                RelativePanel.AlignBottomWithPanel="True">
+                Padding="10"
+                CornerRadius="5,5,0,0"
+                Visibility="{x:Bind ViewModel.ShowEpisodeInfo, Mode=OneWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
+                <Grid.Background>
+                    <media:AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        TintColor="{ThemeResource SystemAccentColor}"
+                        TintOpacity="0.4" />
+                </Grid.Background>
 
                 <Grid Grid.Column="0">
                     <Button Background="Transparent">
@@ -110,10 +129,11 @@
                         </StackPanel>
 
                         <Button.Flyout>
-                            <Flyout>
+                            <Flyout x:Name="EpisodeListFlyout">
                                 <ListView
-                                    Height="300"
+                                    MaxHeight="300"
                                     IsItemClickEnabled="True"
+                                    ItemClick="OnEpisodeItemClick"
                                     ItemsSource="{x:Bind ViewModel.CurrentComic.Episodes, Mode=OneWay}"
                                     SelectionMode="None">
                                     <ListView.ItemTemplate>
@@ -126,6 +146,8 @@
                         </Button.Flyout>
                     </Button>
                 </Grid>
+
+                <Slider Grid.Column="1" Maximum="{x:Bind ViewModel.CurrentEpisodeDetail.PageInfos.Count, Mode=OneWay}" />
             </Grid>
         </Grid>
 

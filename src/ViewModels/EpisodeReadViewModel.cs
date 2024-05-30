@@ -2,13 +2,13 @@
 using System.Threading;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Collections;
-using TerraHistoricus.Api.Models.Episode;
-using TerraHistoricus.Api.Models.Pages;
 
 namespace TerraHistoricus.Uwp.ViewModels;
 
 public sealed partial class EpisodeReadViewModel : ObservableObject
 {
+    [ObservableProperty]
+    private bool showEpisodeInfo;
     [ObservableProperty]
     private bool isLoading = false;
     [ObservableProperty]

@@ -23,4 +23,22 @@ public sealed partial class EpisodeReadPage : Page
             await ViewModel.Initialize(data.Item1, data.Item2);
         }
     }
+
+    private async void OnEpisodeItemClick(object sender, ItemClickEventArgs e)
+    {
+        EpisodeInfo info = (EpisodeInfo)e.ClickedItem;
+
+        EpisodeListFlyout.Hide();
+
+        if (info != ViewModel.CurrentEpisodeInfo)
+        {
+            await ViewModel.Initialize(ViewModel.CurrentComic, info);
+            //MainPageNavigationHelper.Navigate(typeof(EpisodeReadPage), (ViewModel.CurrentComic, info), new SuppressNavigationTransitionInfo());
+        }
+    }
+
+    private void OnComicImageListTapped(object sender, TappedRoutedEventArgs e)
+    {
+        ViewModel.ShowEpisodeInfo = !ViewModel.ShowEpisodeInfo;
+    }
 }
