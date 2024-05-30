@@ -11,8 +11,36 @@
     xmlns:thEpisodeModels="using:TerraHistoricus.Api.Models.Episode"
     xmlns:thPagesModels="using:TerraHistoricus.Api.Models.Pages"
     xmlns:viewmodels="using:TerraHistoricus.Uwp.ViewModels"
+    xmlns:wctControls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     d:DataContext="{d:DesignInstance Type=viewmodels:EpisodeReadViewModel}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <Style x:Key="ImagePlaceholderImage" TargetType="wctControls:ImageEx">
+                        <Setter Property="PlaceholderSource" Value="/Assets/Images/Comic-Loading-Black.png" />
+                    </Style>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Style x:Key="ImagePlaceholderImage" TargetType="wctControls:ImageEx">
+                        <Setter Property="PlaceholderSource" Value="/Assets/Images/Comic-Loading-White.png" />
+                    </Style>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="HighContrastBlack">
+                    <Style x:Key="ImagePlaceholderImage" TargetType="wctControls:ImageEx">
+                        <Setter Property="PlaceholderSource" Value="/Assets/Images/Comic-Loading-White.png" />
+                    </Style>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="HighContrastWhite">
+                    <Style x:Key="ImagePlaceholderImage" TargetType="wctControls:ImageEx">
+                        <Setter Property="PlaceholderSource" Value="/Assets/Images/Comic-Loading-Black.png" />
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -44,14 +72,16 @@
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="thPagesModels:PageDetail">
                         <StackPanel Margin="0,5,0,5">
-                            <Image MaxHeight="500" HorizontalAlignment="Center">
-                                <Image.Source>
-                                    <BitmapImage
-                                        DecodePixelHeight="500"
-                                        DecodePixelType="Logical"
-                                        UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(PageUri)}" />
-                                </Image.Source>
-                            </Image>
+                            <wctControls:ImageEx
+                                MaxHeight="500"
+                                HorizontalAlignment="Center"
+                                IsCacheEnabled="True"
+                                PlaceholderStretch="Uniform"
+                                Style="{ThemeResource ImagePlaceholderImage}">
+                                <wctControls:ImageEx.Source>
+                                    <BitmapImage UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(PageUri)}" />
+                                </wctControls:ImageEx.Source>
+                            </wctControls:ImageEx>
                             <TextBlock
                                 Margin="0,1,0,0"
                                 HorizontalAlignment="Center"
