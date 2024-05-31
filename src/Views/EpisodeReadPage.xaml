@@ -125,17 +125,19 @@
                     <Button Background="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <SymbolIcon Margin="0,0,5,0" Symbol="List" />
-                            <TextBlock Text="章节目录" />
+                            <TextBlock x:Uid="ContentsOfEpisode" />
                         </StackPanel>
 
                         <Button.Flyout>
                             <Flyout x:Name="EpisodeListFlyout">
                                 <ListView
+                                    x:Name="EpisodeListView"
                                     MaxHeight="300"
                                     IsItemClickEnabled="True"
                                     ItemClick="OnEpisodeItemClick"
                                     ItemsSource="{x:Bind ViewModel.CurrentComic.Episodes, Mode=OneWay}"
-                                    SelectionMode="None">
+                                    Loaded="OnEpisodeListViewLoaded"
+                                    SelectionMode="Single">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="thEpisodeModels:EpisodeInfo">
                                             <TextBlock Text="{x:Bind helpersEx:XamlHelperEx.ConcatStringWithSeperator(ShortTitle, Title, ' ')}" />

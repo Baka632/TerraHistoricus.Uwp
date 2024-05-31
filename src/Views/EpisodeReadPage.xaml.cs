@@ -45,4 +45,9 @@ public sealed partial class EpisodeReadPage : Page
     {
         ViewModel.ShowEpisodeInfo = !ViewModel.ShowEpisodeInfo;
     }
+
+    private void OnEpisodeListViewLoaded(object sender, RoutedEventArgs e)
+    {
+        EpisodeListView.SelectedIndex = EpisodeListView.Items.IndexOf(ViewModel.CurrentEpisodeInfo);
+    }
 }

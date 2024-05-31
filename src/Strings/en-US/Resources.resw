@@ -72,4 +72,7 @@
   <data name="DateIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Date</value>
   </data>
+  <data name="ContentsOfEpisode.Text" xml:space="preserve">
+    <value>Episode Contents</value>
+  </data>
 </root>
