@@ -22,6 +22,10 @@ public sealed partial class EpisodeReadPage : Page
         {
             await ViewModel.Initialize(data.Item1, data.Item2);
         }
+        else if (e.Parameter is ValueTuple<string, string> cidData)
+        {
+            await ViewModel.Initialize(cidData.Item1, cidData.Item2);
+        }
     }
 
     private async void OnEpisodeItemClick(object sender, ItemClickEventArgs e)

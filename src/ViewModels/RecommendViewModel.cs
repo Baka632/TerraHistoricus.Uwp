@@ -88,12 +88,6 @@ public sealed partial class RecommendViewModel : ObservableObject
         ContentFrameNavigationHelper.Navigate(typeof(ComicDetailPage), comicCid, transitionInfo: CommonValues.DefaultTransitionInfo);
     }
 
-    [RelayCommand]
-    private async Task NavigateToEpisodeDetailPage(string comicCid)
-    {
-        await DisplayContentDialog("期数 CID", comicCid, "OK".GetLocalized());
-    }
-
     private void ShowInternetError(HttpRequestException ex)
     {
         ErrorVisibility = Visibility.Visible;

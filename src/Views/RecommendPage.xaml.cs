@@ -44,7 +44,7 @@ public sealed partial class RecommendPage : Page
 
     private void OnUpdatedRecommendInfoListViewItemClicked(object sender, ItemClickEventArgs e)
     {
-        EpisodeUpdateInfo data = (EpisodeUpdateInfo)e.ClickedItem;
-        ViewModel.NavigateToEpisodeDetailPageCommand.Execute(data.EpisodeCid);
+        EpisodeUpdateInfo data = (EpisodeUpdateInfo)e.ClickedItem; 
+        MainPageNavigationHelper.Navigate(typeof(EpisodeReadPage), (data.ComicCid, data.EpisodeCid));
     }
 }

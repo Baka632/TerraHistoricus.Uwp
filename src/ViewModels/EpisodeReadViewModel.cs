@@ -31,30 +31,7 @@ public sealed partial class EpisodeReadViewModel : ObservableObject
 
         try
         {
-            if (MemoryCacheHelper<EpisodeDetail>.Default.TryGetData(episodeInfo.Cid, out EpisodeDetail detail))
-            {
-                CurrentEpisodeDetail = detail;
-            }
-            else
-            {
-                CurrentEpisodeDetail = await EpisodeAndPageService.GetEpisodeDetailAsync(comicDetail.Cid, episodeInfo.Cid);
-                MemoryCacheHelper<EpisodeDetail>.Default.Store(episodeInfo.Cid, CurrentEpisodeDetail);
-            }
-
-            if (MemoryCacheHelper<IncrementalLoadingCollection<EpisodePageSource, PageDetail>>.Default.TryGetData(episodeInfo.Cid, out IncrementalLoadingCollection<EpisodePageSource, PageDetail> pages))
-            {
-                Pages = pages;
-            }
-            else
-            {
-                EpisodePageSource source = new(comicDetail, episodeInfo, CurrentEpisodeDetail);
-                Pages = new IncrementalLoadingCollection<EpisodePageSource, PageDetail>(source, 5);
-
-                MemoryCacheHelper<IncrementalLoadingCollection<EpisodePageSource, PageDetail>>.Default.Store(episodeInfo.Cid, Pages);
-            }
-
-            CurrentComic = comicDetail;
-            CurrentEpisodeInfo = episodeInfo;
+            await InitializeCore(comicDetail, episodeInfo);
             ErrorVisibility = Visibility.Collapsed;
         }
         catch (HttpRequestException ex)
@@ -65,6 +42,70 @@ public sealed partial class EpisodeReadViewModel : ObservableObject
         {
             IsLoading = false;
         }
+    }
+
+    public async Task Initialize(string comicCid, string episodeCid)
+    {
+        IsLoading = true;
+        ErrorVisibility = Visibility.Collapsed;
+
+        try
+        {
+            ComicDetail comicDetail;
+
+            if (MemoryCacheHelper<ComicDetail>.Default.TryGetData(comicCid, out ComicDetail value))
+            {
+                comicDetail = value;
+            }
+            else
+            {
+                comicDetail = await ComicService.GetComicDetailAsync(comicCid);
+                MemoryCacheHelper<ComicDetail>.Default.Store(comicCid, comicDetail);
+            }
+
+            EpisodeInfo episodeInfo = comicDetail.Episodes.FirstOrDefault(info => info.Cid == episodeCid);
+
+            await InitializeCore(comicDetail, episodeInfo);
+            ErrorVisibility = Visibility.Collapsed;
+        }
+        catch (HttpRequestException ex)
+        {
+            ShowInternetError(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public async Task InitializeCore(ComicDetail comicDetail, EpisodeInfo episodeInfo)
+    {
+        string episodeCid = episodeInfo.Cid;
+
+        if (MemoryCacheHelper<EpisodeDetail>.Default.TryGetData(episodeCid, out EpisodeDetail detail))
+        {
+            CurrentEpisodeDetail = detail;
+        }
+        else
+        {
+            CurrentEpisodeDetail = await EpisodeAndPageService.GetEpisodeDetailAsync(comicDetail.Cid, episodeCid);
+            MemoryCacheHelper<EpisodeDetail>.Default.Store(episodeCid, CurrentEpisodeDetail);
+        }
+
+        if (MemoryCacheHelper<IncrementalLoadingCollection<EpisodePageSource, PageDetail>>.Default.TryGetData(episodeCid, out IncrementalLoadingCollection<EpisodePageSource, PageDetail> pages))
+        {
+            Pages = pages;
+        }
+        else
+        {
+            EpisodePageSource source = new(comicDetail, episodeCid, CurrentEpisodeDetail);
+            Pages = new IncrementalLoadingCollection<EpisodePageSource, PageDetail>(source, 5);
+
+            MemoryCacheHelper<IncrementalLoadingCollection<EpisodePageSource, PageDetail>>.Default.Store(episodeCid, Pages);
+        }
+
+        CurrentComic = comicDetail;
+        CurrentEpisodeInfo = episodeInfo;
     }
 
     private void ShowInternetError(HttpRequestException ex)
@@ -79,7 +120,7 @@ public sealed partial class EpisodeReadViewModel : ObservableObject
     }
 }
 
-public sealed class EpisodePageSource(ComicDetail comicDetail, EpisodeInfo episodeInfo, EpisodeDetail episodeDetail) : IIncrementalSource<PageDetail>
+public sealed class EpisodePageSource(ComicDetail comicDetail, string episodeCid, EpisodeDetail episodeDetail) : IIncrementalSource<PageDetail>
 {
     private readonly SemaphoreSlim _mutex = new(1);
     private bool isEnd = false;
@@ -106,7 +147,7 @@ public sealed class EpisodePageSource(ComicDetail comicDetail, EpisodeInfo episo
 
                 for (int i = 1; i <= pageCount; i++)
                 {
-                    PageDetail pageDetail = await EpisodeAndPageService.GetPageDetailAsync(comicDetail.Cid, episodeInfo.Cid, i);
+                    PageDetail pageDetail = await EpisodeAndPageService.GetPageDetailAsync(comicDetail.Cid, episodeCid, i);
                     _pages.Add(pageDetail);
                 }
 
@@ -119,7 +160,7 @@ public sealed class EpisodePageSource(ComicDetail comicDetail, EpisodeInfo episo
             {
                 for (int i = _pages.Count + 1; i <= totalPageCount; i++)
                 {
-                    PageDetail pageDetail = await EpisodeAndPageService.GetPageDetailAsync(comicDetail.Cid, episodeInfo.Cid, i);
+                    PageDetail pageDetail = await EpisodeAndPageService.GetPageDetailAsync(comicDetail.Cid, episodeCid, i);
                     _pages.Add(pageDetail);
                 }
                 isEnd = true;
@@ -128,7 +169,7 @@ public sealed class EpisodePageSource(ComicDetail comicDetail, EpisodeInfo episo
             {
                 for (int i = _pages.Count + 1; i <= totalLoadCount; i++)
                 {
-                    PageDetail pageDetail = await EpisodeAndPageService.GetPageDetailAsync(comicDetail.Cid, episodeInfo.Cid, i);
+                    PageDetail pageDetail = await EpisodeAndPageService.GetPageDetailAsync(comicDetail.Cid, episodeCid, i);
                     _pages.Add(pageDetail);
                 }
             }
