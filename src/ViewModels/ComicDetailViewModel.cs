@@ -10,12 +10,15 @@ public sealed partial class ComicDetailViewModel : ObservableObject
     private Visibility errorVisibility = Visibility.Collapsed;
     [ObservableProperty]
     private ErrorInfo errorInfo;
+    [NotifyPropertyChangedFor(nameof(IsMultipleEpisode))]
     [ObservableProperty]
     private ComicDetail currentComicDetail = new ComicDetail() with
     {
         Authors = [],
         Keywords = [],
     };
+
+    public bool IsMultipleEpisode { get => CurrentComicDetail.Episodes is not null && CurrentComicDetail.Episodes.Count() > 1; }
 
     public async Task Initialize(string comicCid)
     {
@@ -57,6 +60,20 @@ public sealed partial class ComicDetailViewModel : ObservableObject
     private void NavigateToEpisodeReadPage(EpisodeInfo info)
     {
         MainPageNavigationHelper.Navigate(typeof(EpisodeReadPage), (CurrentComicDetail, info));
+    }
+
+    [RelayCommand]
+    private void ReadLatestEpisode()
+    {
+        EpisodeInfo latestEpisode = CurrentComicDetail.Episodes.FirstOrDefault();
+        MainPageNavigationHelper.Navigate(typeof(EpisodeReadPage), (CurrentComicDetail, latestEpisode));
+    }
+
+    [RelayCommand]
+    private void ReadFirstEpisode()
+    {
+        EpisodeInfo firstEpisode = CurrentComicDetail.Episodes.LastOrDefault();
+        MainPageNavigationHelper.Navigate(typeof(EpisodeReadPage), (CurrentComicDetail, firstEpisode));
     }
 
     private void ShowInternetError(HttpRequestException ex)

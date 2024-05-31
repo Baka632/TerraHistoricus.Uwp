@@ -60,8 +60,8 @@
   <data name="OK" xml:space="preserve">
     <value>确定</value>
   </data>
-  <data name="ReadComic.Text" xml:space="preserve">
-    <value>阅读</value>
+  <data name="ReadLatestEpisode.Text" xml:space="preserve">
+    <value>阅读最新话</value>
   </data>
   <data name="AuthorIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>作者</value>
@@ -74,5 +74,8 @@
   </data>
   <data name="ContentsOfEpisode.Text" xml:space="preserve">
     <value>章节目录</value>
+  </data>
+  <data name="ReadFirstEpisode.Text" xml:space="preserve">
+    <value>阅读第一话</value>
   </data>
 </root>

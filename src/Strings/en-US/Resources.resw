@@ -60,8 +60,8 @@
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="ReadComic.Text" xml:space="preserve">
-    <value>Read</value>
+  <data name="ReadLatestEpisode.Text" xml:space="preserve">
+    <value>Read the latest episode</value>
   </data>
   <data name="AuthorIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Author</value>
@@ -74,5 +74,8 @@
   </data>
   <data name="ContentsOfEpisode.Text" xml:space="preserve">
     <value>Episode Contents</value>
+  </data>
+  <data name="ReadFirstEpisode.Text" xml:space="preserve">
+    <value>Read the first episode</value>
   </data>
 </root>

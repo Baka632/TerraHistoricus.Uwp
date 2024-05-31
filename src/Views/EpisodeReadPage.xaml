@@ -46,7 +46,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <!--  Row 1 - 标题栏区域  -->
-            <RowDefinition Height="32" />
+            <RowDefinition x:Name="TitleBarArea" Height="32" />
             <RowDefinition />
         </Grid.RowDefinitions>
 

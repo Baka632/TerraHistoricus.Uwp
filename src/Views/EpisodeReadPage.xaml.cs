@@ -12,6 +12,8 @@ public sealed partial class EpisodeReadPage : Page
     public EpisodeReadPage()
     {
         this.InitializeComponent();
+
+        TitleBarArea.Height = EnvironmentHelper.IsWindowsMobile ? new GridLength(0) : new GridLength(32, GridUnitType.Pixel);
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
