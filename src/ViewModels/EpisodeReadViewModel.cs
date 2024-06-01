@@ -8,8 +8,6 @@ namespace TerraHistoricus.Uwp.ViewModels;
 public sealed partial class EpisodeReadViewModel : ObservableObject
 {
     [ObservableProperty]
-    private bool showEpisodeInfo;
-    [ObservableProperty]
     private bool isLoading = false;
     [ObservableProperty]
     private Visibility errorVisibility = Visibility.Collapsed;
@@ -20,9 +18,15 @@ public sealed partial class EpisodeReadViewModel : ObservableObject
     [ObservableProperty]
     private EpisodeDetail currentEpisodeDetail;
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ToNextEpisodeCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ToPreviousEpisodeCommand))]
     private EpisodeInfo currentEpisodeInfo;
     [ObservableProperty]
     private IncrementalLoadingCollection<EpisodePageSource, PageDetail> pages;
+
+    public bool HasNextEpisode => CurrentComic.Episodes is not null && CurrentComic.Episodes.FirstOrDefault() != CurrentEpisodeInfo;
+
+    public bool HasPreviousEpisode => CurrentComic.Episodes is not null && CurrentComic.Episodes.LastOrDefault() != CurrentEpisodeInfo;
 
     public async Task Initialize(ComicDetail comicDetail, EpisodeInfo episodeInfo)
     {
@@ -106,6 +110,50 @@ public sealed partial class EpisodeReadViewModel : ObservableObject
 
         CurrentComic = comicDetail;
         CurrentEpisodeInfo = episodeInfo;
+    }
+
+    [RelayCommand(CanExecute = nameof(HasNextEpisode))]
+    private async Task ToNextEpisode()
+    {
+        List<EpisodeInfo> episodeList = CurrentComic.Episodes?.ToList();
+        if (episodeList is null)
+        {
+            return;
+        }
+
+        int currentEpisodeIndex = episodeList.IndexOf(CurrentEpisodeInfo);
+        if (currentEpisodeIndex == -1)
+        {
+            return;
+        }
+
+        if (currentEpisodeIndex - 1 >= 0)
+        {
+            EpisodeInfo nextEpisode = episodeList[currentEpisodeIndex - 1];
+            await Initialize(CurrentComic, nextEpisode);
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(HasPreviousEpisode))]
+    private async Task ToPreviousEpisode()
+    {
+        List<EpisodeInfo> episodeList = CurrentComic.Episodes?.ToList();
+        if (episodeList is null)
+        {
+            return;
+        }
+
+        int currentEpisodeIndex = episodeList.IndexOf(CurrentEpisodeInfo);
+        if (currentEpisodeIndex == -1)
+        {
+            return;
+        }
+
+        if (currentEpisodeIndex + 1 < episodeList.Count)
+        {
+            EpisodeInfo previousEpisode = episodeList[currentEpisodeIndex + 1];
+            await Initialize(CurrentComic, previousEpisode);
+        }
     }
 
     private void ShowInternetError(HttpRequestException ex)

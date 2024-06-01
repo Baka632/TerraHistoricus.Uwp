@@ -18,6 +18,29 @@
 
     <Page.Resources>
         <ResourceDictionary>
+            <Storyboard x:Name="ShowComicInfoStoryboard">
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ComicInfoGrid" Storyboard.TargetProperty="Visibility">
+                    <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                </ObjectAnimationUsingKeyFrames>
+                <DoubleAnimation
+                    Storyboard.TargetName="ComicInfoGrid"
+                    Storyboard.TargetProperty="Opacity"
+                    From="0"
+                    To="1"
+                    Duration="0:0:0.1" />
+            </Storyboard>
+            <Storyboard x:Name="HideComicInfoStoryboard">
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ComicInfoGrid" Storyboard.TargetProperty="Visibility">
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="Collapsed" />
+                </ObjectAnimationUsingKeyFrames>
+                <DoubleAnimation
+                    Storyboard.TargetName="ComicInfoGrid"
+                    Storyboard.TargetProperty="Opacity"
+                    From="1"
+                    To="0"
+                    Duration="0:0:0.1" />
+            </Storyboard>
+
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <Style x:Key="ImagePlaceholderImage" TargetType="wctControls:ImageEx">
@@ -44,21 +67,8 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <!--  Row 1 - 标题栏区域  -->
-            <RowDefinition x:Name="TitleBarArea" Height="32" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
+        <Grid>
             <ListView
-                Grid.RowSpan="3"
                 IsItemClickEnabled="False"
                 ItemsSource="{x:Bind ViewModel.Pages, Mode=OneWay}"
                 SelectionMode="None"
@@ -87,69 +97,126 @@
             </ListView>
 
             <Grid
-                Grid.Row="0"
-                Padding="10"
-                CornerRadius="0,0,5,5"
-                Visibility="{x:Bind ViewModel.ShowEpisodeInfo, Mode=OneWay}">
-                <Grid.Background>
-                    <media:AcrylicBrush
-                        BackgroundSource="Backdrop"
-                        TintColor="{ThemeResource SystemAccentColor}"
-                        TintOpacity="0.4" />
-                </Grid.Background>
+                x:Name="ComicInfoGrid"
+                Padding="11,0,0,10"
+                Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="18"
-                    Text="{x:Bind helpersEx:XamlHelperEx.ConcatStringWithSeperator(ViewModel.CurrentEpisodeDetail.ShortTitle, ViewModel.CurrentEpisodeDetail.Title, ' '),Mode=OneWay}" />
-            </Grid>
+                <Grid
+                    Grid.Row="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    Tapped="OnChromeGridTapped" />
 
-            <Grid
-                Grid.Row="2"
-                Padding="10"
-                CornerRadius="5,5,0,0"
-                Visibility="{x:Bind ViewModel.ShowEpisodeInfo, Mode=OneWay}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.Background>
-                    <media:AcrylicBrush
-                        BackgroundSource="Backdrop"
-                        TintColor="{ThemeResource SystemAccentColor}"
-                        TintOpacity="0.4" />
-                </Grid.Background>
+                <Grid
+                    Grid.Row="0"
+                    MinWidth="300"
+                    Margin="0,0,0,20"
+                    Padding="20"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Background="{ThemeResource TeachingTipBackgroundBrush}"
+                    BorderBrush="{ThemeResource TeachingTipBorderBrush}"
+                    BorderThickness="{ThemeResource TeachingTipContentBorderThicknessUntargeted}"
+                    CornerRadius="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
 
-                <Grid Grid.Column="0">
-                    <Button Background="Transparent">
-                        <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Margin="0,0,5,0" Symbol="List" />
-                            <TextBlock x:Uid="ContentsOfEpisode" />
-                        </StackPanel>
+                        <TextBlock
+                            Grid.Row="0"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            MaxLines="2"
+                            Text="{x:Bind ViewModel.CurrentComic.Title, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="1"
+                            FontSize="16"
+                            Text="{x:Bind helpersEx:XamlHelperEx.ConcatStringWithSeperator(ViewModel.CurrentEpisodeDetail.ShortTitle, ViewModel.CurrentEpisodeDetail.Title, ' '),Mode=OneWay}" />
+                        <StackPanel
+                            Grid.Row="2"
+                            Margin="0,10,0,10"
+                            BorderBrush="Gray"
+                            BorderThickness="0.6" />
+                        <TextBlock Grid.Row="3" Foreground="#8f8f8f">
+                            <Run Text="此话更新日期：" />
+                            <Run Text="{x:Bind helpersEx:XamlHelperEx.ToDateString(ViewModel.CurrentEpisodeInfo.DisplayTimestamp, 'yyyy/M/d'),Mode=OneWay}" />
+                        </TextBlock>
+                    </Grid>
 
-                        <Button.Flyout>
-                            <Flyout x:Name="EpisodeListFlyout">
-                                <ListView
-                                    x:Name="EpisodeListView"
-                                    MaxHeight="300"
-                                    IsItemClickEnabled="True"
-                                    ItemClick="OnEpisodeItemClick"
-                                    ItemsSource="{x:Bind ViewModel.CurrentComic.Episodes, Mode=OneWay}"
-                                    Loaded="OnEpisodeListViewLoaded"
-                                    SelectionMode="Single">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate x:DataType="thEpisodeModels:EpisodeInfo">
-                                            <TextBlock Text="{x:Bind helpersEx:XamlHelperEx.ConcatStringWithSeperator(ShortTitle, Title, ' ')}" />
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
+                    <StackPanel
+                        Grid.Row="1"
+                        Margin="0,10,0,0"
+                        Orientation="Horizontal">
+                        <Button
+                            Margin="0,0,5,0"
+                            Background="Transparent"
+                            Command="{x:Bind ViewModel.ToPreviousEpisodeCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Margin="0,0,5,0" Symbol="Back" />
+                                <TextBlock Text="上一话" />
+                            </StackPanel>
+                        </Button>
+                        <Button Background="Transparent" Command="{x:Bind ViewModel.ToNextEpisodeCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Margin="0,0,5,0" Symbol="Forward" />
+                                <TextBlock Text="下一话" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </Grid>
 
-                <Slider Grid.Column="1" Maximum="{x:Bind ViewModel.CurrentEpisodeDetail.PageInfos.Count, Mode=OneWay}" />
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid>
+                        <Button Background="Transparent">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Margin="0,0,5,0" Symbol="List" />
+                                <TextBlock x:Uid="ContentsOfEpisode" />
+                            </StackPanel>
+
+                            <Button.Flyout>
+                                <Flyout x:Name="EpisodeListFlyout">
+                                    <ListView
+                                        x:Name="EpisodeListView"
+                                        MaxHeight="300"
+                                        IsItemClickEnabled="True"
+                                        ItemClick="OnEpisodeItemClick"
+                                        ItemsSource="{x:Bind ViewModel.CurrentComic.Episodes, Mode=OneWay}"
+                                        Loaded="OnEpisodeListViewLoaded"
+                                        SelectionMode="Single">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="thEpisodeModels:EpisodeInfo">
+                                                <TextBlock Text="{x:Bind helpersEx:XamlHelperEx.ConcatStringWithSeperator(ShortTitle, Title, ' ')}" />
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </Grid>
+
+                    <Slider Grid.Column="1" Maximum="{x:Bind ViewModel.CurrentEpisodeDetail.PageInfos.Count, Mode=OneWay}" />
+                </Grid>
             </Grid>
         </Grid>
 

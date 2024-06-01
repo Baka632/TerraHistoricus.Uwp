@@ -12,8 +12,7 @@ public sealed partial class EpisodeReadPage : Page
     public EpisodeReadPage()
     {
         this.InitializeComponent();
-
-        TitleBarArea.Height = EnvironmentHelper.IsWindowsMobile ? new GridLength(0) : new GridLength(32, GridUnitType.Pixel);
+        HideComicInfoStoryboard.Begin();
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -45,11 +44,16 @@ public sealed partial class EpisodeReadPage : Page
 
     private void OnComicImageListTapped(object sender, TappedRoutedEventArgs e)
     {
-        ViewModel.ShowEpisodeInfo = !ViewModel.ShowEpisodeInfo;
+        ShowComicInfoStoryboard.Begin();
     }
 
     private void OnEpisodeListViewLoaded(object sender, RoutedEventArgs e)
     {
         EpisodeListView.SelectedIndex = EpisodeListView.Items.IndexOf(ViewModel.CurrentEpisodeInfo);
+    }
+
+    private void OnChromeGridTapped(object sender, TappedRoutedEventArgs e)
+    {
+        HideComicInfoStoryboard.Begin();
     }
 }
