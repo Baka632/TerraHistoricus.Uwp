@@ -53,6 +53,15 @@ sealed partial class App : Application
 
             // 将框架放在当前窗口中
             Window.Current.Content = rootFrame;
+
+            if (EnvironmentHelper.IsWindowsMobile)
+            {
+                ResourceDictionary win10AppBackgroundStyle = new()
+                {
+                    Source = new Uri("ms-appx:///ResourcesDictionaries/Win10AppBackground.xaml")
+                };
+                Resources.MergedDictionaries.Add(win10AppBackgroundStyle);
+            }
         }
 
         if (e.PrelaunchActivated == false)
