@@ -70,8 +70,13 @@
     <Grid>
         <Grid Visibility="{x:Bind helpers:XamlHelper.ReverseVisibility(ViewModel.ErrorVisibility), Mode=OneWay}">
             <ListView
+                x:Name="ComicImageList"
                 IsItemClickEnabled="False"
                 ItemsSource="{x:Bind ViewModel.Pages, Mode=OneWay}"
+                Loaded="OnComicImageListLoaded"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                ScrollViewer.HorizontalScrollMode="Enabled"
+                ScrollViewer.ZoomMode="Enabled"
                 SelectionMode="None"
                 Tapped="OnComicImageListTapped">
                 <ListView.ItemTemplate>
@@ -82,7 +87,7 @@
                                 Margin="0,5,0,5"
                                 x:Load="{x:Bind IsSuccess, Mode=OneWay}">
                                 <wctControls:ImageEx
-                                    MaxHeight="500"
+                                    Width="500"
                                     HorizontalAlignment="Center"
                                     DataContext="{x:Bind}"
                                     ImageExFailed="OnComicImageFailed"
@@ -217,11 +222,18 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Row="1">
+                <Grid
+                    Grid.Row="1"
+                    Margin="0,0,10,0"
+                    Padding="10"
+                    Background="{ThemeResource TeachingTipBackgroundBrush}"
+                    BorderBrush="{ThemeResource TeachingTipBorderBrush}"
+                    BorderThickness="{ThemeResource TeachingTipContentBorderThicknessUntargeted}"
+                    CornerRadius="3">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <Grid>
@@ -252,7 +264,37 @@
                         </Button>
                     </Grid>
 
-                    <Slider Grid.Column="1" Maximum="{x:Bind ViewModel.CurrentEpisodeDetail.PageInfos.Count, Mode=OneWay}" />
+                    <Slider
+                        Grid.Column="1"
+                        Margin="10,0,10,0"
+                        VerticalAlignment="Center"
+                        Maximum="{x:Bind ViewModel.CurrentEpisodeDetail.PageInfos.Count, Mode=OneWay}" />
+
+                    <StackPanel
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+                                <Setter Property="Height" Value="35" />
+                                <Setter Property="Width" Value="35" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <Button>
+                            <SymbolIcon Symbol="Remove" />
+                        </Button>
+                        <TextBlock
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind x:String.Format('{0:P1}', ListViewerScrollViewer.ZoomFactor), Mode=OneWay}" />
+                        <Button>
+                            <SymbolIcon Symbol="Add" />
+                        </Button>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Grid>
