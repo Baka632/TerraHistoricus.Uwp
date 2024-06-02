@@ -44,153 +44,155 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid>
-            <Grid Visibility="{x:Bind helpers:XamlHelper.ReverseVisibility(ViewModel.IsLoading), Mode=OneWay}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition x:Name="SecondCoverInfoColumnDefinition" />
-                    </Grid.ColumnDefinitions>
+            <Grid Visibility="{x:Bind helpers:XamlHelper.ReverseVisibility(ViewModel.ErrorVisibility), Mode=OneWay}">
+                <Grid Visibility="{x:Bind helpers:XamlHelper.ReverseVisibility(ViewModel.IsLoading), Mode=OneWay}">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <Image
-                        x:Name="ComicCover"
-                        Margin="0,0,10,0"
-                        VerticalAlignment="Top"
-                        ImageOpened="OnComicCoverImageOpened"
-                        Stretch="UniformToFill">
-                        <Image.Source>
-                            <BitmapImage UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(ViewModel.CurrentComicDetail.CoverUri), Mode=OneWay}" />
-                        </Image.Source>
-                    </Image>
-
-                    <Grid x:Name="ComicInfoGrid" Margin="0,0,10,0">
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition x:Name="SecondCoverInfoColumnDefinition" />
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0">
-                            <TextBlock
-                                Style="{ThemeResource SubtitleTextBlockStyle}"
-                                Text="{x:Bind ViewModel.CurrentComicDetail.Title, Mode=OneWay}"
-                                TextWrapping="Wrap" />
-                            <TextBlock
-                                Foreground="#8f8f8f"
-                                Text="{x:Bind ViewModel.CurrentComicDetail.Subtitle, Mode=OneWay}"
-                                TextWrapping="Wrap"
-                                ToolTipService.ToolTip="{x:Bind ViewModel.CurrentComicDetail.Subtitle, Mode=OneWay}"
-                                Visibility="{x:Bind helpers:XamlHelper.IsStringNullOrEmptyReverseVisibility(ViewModel.CurrentComicDetail.Subtitle), Mode=OneWay}" />
-                            <TextBlock
+                        <Image
+                            x:Name="ComicCover"
+                            Margin="0,0,10,0"
+                            VerticalAlignment="Top"
+                            ImageOpened="OnComicCoverImageOpened"
+                            Stretch="UniformToFill">
+                            <Image.Source>
+                                <BitmapImage UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(ViewModel.CurrentComicDetail.CoverUri), Mode=OneWay}" />
+                            </Image.Source>
+                        </Image>
+
+                        <Grid x:Name="ComicInfoGrid" Margin="0,0,10,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0">
+                                <TextBlock
+                                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                                    Text="{x:Bind ViewModel.CurrentComicDetail.Title, Mode=OneWay}"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    Foreground="#8f8f8f"
+                                    Text="{x:Bind ViewModel.CurrentComicDetail.Subtitle, Mode=OneWay}"
+                                    TextWrapping="Wrap"
+                                    ToolTipService.ToolTip="{x:Bind ViewModel.CurrentComicDetail.Subtitle, Mode=OneWay}"
+                                    Visibility="{x:Bind helpers:XamlHelper.IsStringNullOrEmptyReverseVisibility(ViewModel.CurrentComicDetail.Subtitle), Mode=OneWay}" />
+                                <TextBlock
+                                    Margin="0,5,0,0"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind ViewModel.CurrentComicDetail.Introduction, Mode=OneWay}"
+                                    TextWrapping="Wrap"
+                                    ToolTipService.ToolTip="{x:Bind ViewModel.CurrentComicDetail.Introduction, Mode=OneWay}" />
+                                <StackPanel
+                                    Margin="0,10,0,10"
+                                    BorderBrush="Gray"
+                                    BorderThickness="0.6" />
+                                <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                    <SymbolIcon
+                                        x:Uid="DateIcon"
+                                        Margin="0,0,10,0"
+                                        Symbol="Calendar" />
+                                    <TextBlock Text="{x:Bind helpersEx:XamlHelperEx.ToDateString(ViewModel.CurrentComicDetail.UpdateTimestamp, 'yyyy/M/d'), Mode=OneWay}" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                    <SymbolIcon
+                                        x:Uid="AuthorIcon"
+                                        Margin="0,0,10,0"
+                                        Symbol="People" />
+                                    <TextBlock Text="{x:Bind x:String.Join('/', ViewModel.CurrentComicDetail.Authors), Mode=OneWay}" ToolTipService.ToolTip="{x:Bind x:String.Join('/', ViewModel.CurrentComicDetail.Authors), Mode=OneWay}" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                    <SymbolIcon
+                                        x:Uid="KeywordIcon"
+                                        Margin="0,0,10,0"
+                                        Symbol="Tag" />
+                                    <TextBlock Text="{x:Bind x:String.Join('、', ViewModel.CurrentComicDetail.Keywords), Mode=OneWay}" ToolTipService.ToolTip="{x:Bind x:String.Join('、', ViewModel.CurrentComicDetail.Keywords), Mode=OneWay}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Row="1"
                                 Margin="0,5,0,0"
-                                IsTextSelectionEnabled="True"
-                                Text="{x:Bind ViewModel.CurrentComicDetail.Introduction, Mode=OneWay}"
-                                TextWrapping="Wrap"
-                                ToolTipService.ToolTip="{x:Bind ViewModel.CurrentComicDetail.Introduction, Mode=OneWay}" />
-                            <StackPanel
-                                Margin="0,10,0,10"
-                                BorderBrush="Gray"
-                                BorderThickness="0.6" />
-                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                                <SymbolIcon
-                                    x:Uid="DateIcon"
-                                    Margin="0,0,10,0"
-                                    Symbol="Calendar" />
-                                <TextBlock Text="{x:Bind helpersEx:XamlHelperEx.ToDateString(ViewModel.CurrentComicDetail.UpdateTimestamp, 'yyyy/M/d'), Mode=OneWay}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                                <SymbolIcon
-                                    x:Uid="AuthorIcon"
-                                    Margin="0,0,10,0"
-                                    Symbol="People" />
-                                <TextBlock Text="{x:Bind x:String.Join('/', ViewModel.CurrentComicDetail.Authors), Mode=OneWay}" ToolTipService.ToolTip="{x:Bind x:String.Join('/', ViewModel.CurrentComicDetail.Authors), Mode=OneWay}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                                <SymbolIcon
-                                    x:Uid="KeywordIcon"
-                                    Margin="0,0,10,0"
-                                    Symbol="Tag" />
-                                <TextBlock Text="{x:Bind x:String.Join('、', ViewModel.CurrentComicDetail.Keywords), Mode=OneWay}" ToolTipService.ToolTip="{x:Bind x:String.Join('、', ViewModel.CurrentComicDetail.Keywords), Mode=OneWay}" />
-                            </StackPanel>
-                        </StackPanel>
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal">
+                                <Button
+                                    AccessKey="0"
+                                    Background="Transparent"
+                                    Command="{x:Bind ViewModel.ReadLatestEpisodeCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Grid Margin="0,0,5,0">
+                                            <contract8Present:FontIcon Glyph="&#xE736;" />
+                                            <contract8NotPresent:PathIcon
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Data="F1 M 18.75 2.5 L 18.75 18.75 L 0 18.75 L 0 2.5 L 2.5 2.5 L 2.5 1.25 L 6.25 1.25 C 6.822917 1.25 7.374674 1.337891 7.905273 1.513672 C 8.435872 1.689453 8.925781 1.953125 9.375 2.304688 C 9.824219 1.953125 10.314127 1.689453 10.844727 1.513672 C 11.375325 1.337891 11.927083 1.25 12.5 1.25 L 16.25 1.25 L 16.25 2.5 Z M 12.5 2.5 C 12.044271 2.5 11.601562 2.576498 11.171875 2.729492 C 10.742188 2.882488 10.351562 3.105469 10 3.398438 L 10 15.644531 C 10.384114 15.429688 10.78776 15.268555 11.210938 15.161133 C 11.634114 15.053711 12.063802 15 12.5 15 L 15 15 L 15 2.5 Z M 3.75 15 L 6.25 15 C 6.686198 15 7.115885 15.053711 7.539062 15.161133 C 7.962239 15.268555 8.365885 15.429688 8.75 15.644531 L 8.75 3.398438 C 8.398438 3.105469 8.007812 2.882488 7.578125 2.729492 C 7.148438 2.576498 6.705729 2.5 6.25 2.5 L 3.75 2.5 Z M 1.25 17.5 L 9.121094 17.5 C 8.91276 17.298178 8.701172 17.120768 8.486328 16.967773 C 8.271484 16.814779 8.048502 16.68457 7.817383 16.577148 C 7.586263 16.469727 7.342122 16.388346 7.084961 16.333008 C 6.827799 16.27767 6.549479 16.25 6.25 16.25 L 2.5 16.25 L 2.5 3.75 L 1.25 3.75 Z M 17.5 3.75 L 16.25 3.75 L 16.25 16.25 L 12.5 16.25 C 12.200521 16.25 11.9222 16.27767 11.665039 16.333008 C 11.407877 16.388346 11.163736 16.469727 10.932617 16.577148 C 10.701497 16.68457 10.478516 16.814779 10.263672 16.967773 C 10.048828 17.120768 9.837239 17.298178 9.628906 17.5 L 17.5 17.5 Z " />
+                                        </Grid>
+                                        <TextBlock x:Uid="ReadLatestEpisode" />
+                                    </StackPanel>
+                                </Button>
 
-                        <StackPanel
-                            Grid.Row="1"
-                            Margin="0,5,0,0"
-                            VerticalAlignment="Bottom"
-                            Orientation="Horizontal">
-                            <Button
-                                AccessKey="0"
-                                Background="Transparent"
-                                Command="{x:Bind ViewModel.ReadLatestEpisodeCommand}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Grid Margin="0,0,5,0">
-                                        <contract8Present:FontIcon Glyph="&#xE736;" />
-                                        <contract8NotPresent:PathIcon
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Data="F1 M 18.75 2.5 L 18.75 18.75 L 0 18.75 L 0 2.5 L 2.5 2.5 L 2.5 1.25 L 6.25 1.25 C 6.822917 1.25 7.374674 1.337891 7.905273 1.513672 C 8.435872 1.689453 8.925781 1.953125 9.375 2.304688 C 9.824219 1.953125 10.314127 1.689453 10.844727 1.513672 C 11.375325 1.337891 11.927083 1.25 12.5 1.25 L 16.25 1.25 L 16.25 2.5 Z M 12.5 2.5 C 12.044271 2.5 11.601562 2.576498 11.171875 2.729492 C 10.742188 2.882488 10.351562 3.105469 10 3.398438 L 10 15.644531 C 10.384114 15.429688 10.78776 15.268555 11.210938 15.161133 C 11.634114 15.053711 12.063802 15 12.5 15 L 15 15 L 15 2.5 Z M 3.75 15 L 6.25 15 C 6.686198 15 7.115885 15.053711 7.539062 15.161133 C 7.962239 15.268555 8.365885 15.429688 8.75 15.644531 L 8.75 3.398438 C 8.398438 3.105469 8.007812 2.882488 7.578125 2.729492 C 7.148438 2.576498 6.705729 2.5 6.25 2.5 L 3.75 2.5 Z M 1.25 17.5 L 9.121094 17.5 C 8.91276 17.298178 8.701172 17.120768 8.486328 16.967773 C 8.271484 16.814779 8.048502 16.68457 7.817383 16.577148 C 7.586263 16.469727 7.342122 16.388346 7.084961 16.333008 C 6.827799 16.27767 6.549479 16.25 6.25 16.25 L 2.5 16.25 L 2.5 3.75 L 1.25 3.75 Z M 17.5 3.75 L 16.25 3.75 L 16.25 16.25 L 12.5 16.25 C 12.200521 16.25 11.9222 16.27767 11.665039 16.333008 C 11.407877 16.388346 11.163736 16.469727 10.932617 16.577148 C 10.701497 16.68457 10.478516 16.814779 10.263672 16.967773 C 10.048828 17.120768 9.837239 17.298178 9.628906 17.5 L 17.5 17.5 Z " />
-                                    </Grid>
-                                    <TextBlock x:Uid="ReadLatestEpisode" />
-                                </StackPanel>
-                            </Button>
-
-                            <Button
-                                x:Name="ReadFirstEpisodeButton"
-                                Margin="5,0,0,0"
-                                x:Load="{x:Bind ViewModel.IsMultipleEpisode, Mode=OneWay}"
-                                AccessKey="1"
-                                Background="Transparent"
-                                Command="{x:Bind ViewModel.ReadFirstEpisodeCommand}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Grid Margin="0,0,5,0">
-                                        <contract8Present:FontIcon Glyph="&#xE5B1;" />
-                                        <contract8NotPresent:PathIcon
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Data="F1 M 5.029297 0.908203 L 5.908203 0.029297 L 15.888672 10 L 5.908203 19.970703 L 5.029297 19.091797 L 14.111328 10 Z M 18.75 0 L 20 0 L 20 20 L 18.75 20 Z " />
-                                    </Grid>
-                                    <TextBlock x:Uid="ReadFirstEpisode" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
+                                <Button
+                                    x:Name="ReadFirstEpisodeButton"
+                                    Margin="5,0,0,0"
+                                    x:Load="{x:Bind ViewModel.IsMultipleEpisode, Mode=OneWay}"
+                                    AccessKey="1"
+                                    Background="Transparent"
+                                    Command="{x:Bind ViewModel.ReadFirstEpisodeCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Grid Margin="0,0,5,0">
+                                            <contract8Present:FontIcon Glyph="&#xE5B1;" />
+                                            <contract8NotPresent:PathIcon
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Data="F1 M 5.029297 0.908203 L 5.908203 0.029297 L 15.888672 10 L 5.908203 19.970703 L 5.029297 19.091797 L 14.111328 10 Z M 18.75 0 L 20 0 L 20 20 L 18.75 20 Z " />
+                                        </Grid>
+                                        <TextBlock x:Uid="ReadFirstEpisode" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
-                </Grid>
 
-                <wctControls:AdaptiveGridView
-                    Grid.Row="1"
-                    Margin="0,10,0,0"
-                    DesiredWidth="300"
-                    IsItemClickEnabled="True"
-                    ItemClickCommand="{x:Bind ViewModel.NavigateToEpisodeReadPageCommand}"
-                    ItemHeight="50"
-                    ItemsSource="{x:Bind ViewModel.CurrentComicDetail.Episodes, Mode=OneWay}"
-                    SelectionMode="None">
-                    <wctControls:AdaptiveGridView.ItemTemplate>
-                        <DataTemplate x:DataType="thModels:EpisodeInfo">
-                            <StackPanel
-                                VerticalAlignment="Center"
-                                Background="Transparent"
-                                ToolTipService.ToolTip="{x:Bind helpersEx:XamlHelperEx.ConcatStringWithSeperator(ShortTitle, Title, ' ')}">
-                                <TextBlock
-                                    Text="{x:Bind ShortTitle}"
-                                    TextAlignment="Center"
-                                    TextTrimming="CharacterEllipsis" />
-                                <TextBlock
-                                    Text="{x:Bind Title}"
-                                    TextAlignment="Center"
-                                    TextTrimming="CharacterEllipsis" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </wctControls:AdaptiveGridView.ItemTemplate>
-                </wctControls:AdaptiveGridView>
+                    <wctControls:AdaptiveGridView
+                        Grid.Row="1"
+                        Margin="0,10,0,0"
+                        DesiredWidth="300"
+                        IsItemClickEnabled="True"
+                        ItemClickCommand="{x:Bind ViewModel.NavigateToEpisodeReadPageCommand}"
+                        ItemHeight="50"
+                        ItemsSource="{x:Bind ViewModel.CurrentComicDetail.Episodes, Mode=OneWay}"
+                        SelectionMode="None">
+                        <wctControls:AdaptiveGridView.ItemTemplate>
+                            <DataTemplate x:DataType="thModels:EpisodeInfo">
+                                <StackPanel
+                                    VerticalAlignment="Center"
+                                    Background="Transparent"
+                                    ToolTipService.ToolTip="{x:Bind helpersEx:XamlHelperEx.ConcatStringWithSeperator(ShortTitle, Title, ' ')}">
+                                    <TextBlock
+                                        Text="{x:Bind ShortTitle}"
+                                        TextAlignment="Center"
+                                        TextTrimming="CharacterEllipsis" />
+                                    <TextBlock
+                                        Text="{x:Bind Title}"
+                                        TextAlignment="Center"
+                                        TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </wctControls:AdaptiveGridView.ItemTemplate>
+                    </wctControls:AdaptiveGridView>
+                </Grid>
             </Grid>
 
             <!--#region Loading & Error-->

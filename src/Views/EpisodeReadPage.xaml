@@ -8,6 +8,7 @@
     xmlns:local="using:TerraHistoricus.Uwp.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.UI.Xaml.Media"
+    xmlns:models="using:TerraHistoricus.Uwp.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:thEpisodeModels="using:TerraHistoricus.Api.Models.Episode"
     xmlns:thPagesModels="using:TerraHistoricus.Api.Models.Pages"
@@ -67,31 +68,62 @@
     </Page.Resources>
 
     <Grid>
-        <Grid>
+        <Grid Visibility="{x:Bind helpers:XamlHelper.ReverseVisibility(ViewModel.ErrorVisibility), Mode=OneWay}">
             <ListView
                 IsItemClickEnabled="False"
                 ItemsSource="{x:Bind ViewModel.Pages, Mode=OneWay}"
                 SelectionMode="None"
                 Tapped="OnComicImageListTapped">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="thPagesModels:PageDetail">
-                        <StackPanel Margin="0,5,0,5">
-                            <wctControls:ImageEx
-                                MaxHeight="500"
-                                HorizontalAlignment="Center"
-                                IsCacheEnabled="True"
-                                PlaceholderStretch="Uniform"
-                                Style="{ThemeResource ImagePlaceholderImage}">
-                                <wctControls:ImageEx.Source>
-                                    <BitmapImage UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(PageUri)}" />
-                                </wctControls:ImageEx.Source>
-                            </wctControls:ImageEx>
-                            <TextBlock
-                                Margin="0,1,0,0"
-                                HorizontalAlignment="Center"
-                                x:Phase="2"
-                                Text="{x:Bind PageNumber}" />
-                        </StackPanel>
+                    <DataTemplate x:DataType="models:PageDetailWrapper">
+                        <Grid DataContext="{x:Bind}" Loaded="OnPageContentGridLoaded">
+                            <StackPanel
+                                x:Name="ComicImageStackPanel"
+                                Margin="0,5,0,5"
+                                x:Load="{x:Bind IsSuccess, Mode=OneWay}">
+                                <wctControls:ImageEx
+                                    MaxHeight="500"
+                                    HorizontalAlignment="Center"
+                                    DataContext="{x:Bind}"
+                                    ImageExFailed="OnComicImageFailed"
+                                    IsCacheEnabled="True"
+                                    PlaceholderStretch="Uniform"
+                                    Style="{ThemeResource ImagePlaceholderImage}">
+                                    <wctControls:ImageEx.Source>
+                                        <BitmapImage UriSource="{x:Bind helpersEx:XamlHelperEx.ToUri(Model.PageUri), Mode=OneWay}" />
+                                    </wctControls:ImageEx.Source>
+                                </wctControls:ImageEx>
+                                <TextBlock
+                                    Margin="0,1,0,0"
+                                    HorizontalAlignment="Center"
+                                    x:Phase="2"
+                                    Text="{x:Bind Model.PageNumber, Mode=OneWay}" />
+                            </StackPanel>
+                            <Grid
+                                x:Name="ReloadGrid"
+                                MinHeight="500"
+                                x:Load="{x:Bind helpers:XamlHelper.ReverseBoolean(IsSuccess), Mode=OneWay}">
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Visibility="{x:Bind helpers:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
+                                    <TextBlock
+                                        Margin="0,0,0,10"
+                                        VerticalAlignment="Center"
+                                        Text="出错了。" />
+                                    <Button
+                                        VerticalAlignment="Center"
+                                        Command="{x:Bind RetryInitialzationCommand}"
+                                        Content="重新加载" />
+                                </StackPanel>
+                                <ProgressRing
+                                    Width="50"
+                                    Height="50"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    IsActive="{x:Bind IsLoading, Mode=OneWay}" />
+                            </Grid>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -222,7 +254,6 @@
 
         <!--#region Loading & Error-->
         <ProgressRing
-            Grid.Row="1"
             Width="50"
             Height="50"
             HorizontalAlignment="Center"
@@ -230,7 +261,6 @@
             IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
         <StackPanel
-            Grid.Row="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Visibility="{x:Bind ViewModel.ErrorVisibility, Mode=OneWay}">

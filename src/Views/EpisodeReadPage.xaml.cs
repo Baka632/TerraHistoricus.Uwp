@@ -1,5 +1,7 @@
 ﻿// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
+using Microsoft.Toolkit.Uwp.UI.Controls;
+
 namespace TerraHistoricus.Uwp.Views;
 
 /// <summary>
@@ -44,7 +46,10 @@ public sealed partial class EpisodeReadPage : Page
 
     private void OnComicImageListTapped(object sender, TappedRoutedEventArgs e)
     {
-        ShowComicInfoStoryboard.Begin();
+        if (ViewModel.ErrorVisibility != Visibility.Visible)
+        {
+            ShowComicInfoStoryboard.Begin();
+        }
     }
 
     private void OnEpisodeListViewLoaded(object sender, RoutedEventArgs e)
@@ -55,5 +60,25 @@ public sealed partial class EpisodeReadPage : Page
     private void OnChromeGridTapped(object sender, TappedRoutedEventArgs e)
     {
         HideComicInfoStoryboard.Begin();
+    }
+
+    private void OnComicImageFailed(object sender, ImageExFailedEventArgs e)
+    {
+        ImageEx imageEx = (ImageEx)sender;
+
+        if (imageEx.DataContext is PageDetailWrapper wrapper)
+        {
+            wrapper.IsSuccess = false;
+        }
+    }
+
+    private async void OnPageContentGridLoaded(object sender, RoutedEventArgs e)
+    {
+        Grid grid = (Grid)sender;
+
+        if (grid.DataContext is PageDetailWrapper wrapper && wrapper.IsSuccess != true)
+        {
+            await wrapper.TryInitialize();
+        }
     }
 }

@@ -22,7 +22,7 @@ public sealed partial class EpisodeReadViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(ToPreviousEpisodeCommand))]
     private EpisodeInfo currentEpisodeInfo;
     [ObservableProperty]
-    private IncrementalLoadingCollection<EpisodePageSource, PageDetail> pages;
+    private IncrementalLoadingCollection<EpisodePageSource, PageDetailWrapper> pages;
 
     public bool HasNextEpisode => CurrentComic.Episodes is not null && CurrentComic.Episodes.FirstOrDefault() != CurrentEpisodeInfo;
 
@@ -96,16 +96,16 @@ public sealed partial class EpisodeReadViewModel : ObservableObject
             MemoryCacheHelper<EpisodeDetail>.Default.Store(episodeCid, CurrentEpisodeDetail);
         }
 
-        if (MemoryCacheHelper<IncrementalLoadingCollection<EpisodePageSource, PageDetail>>.Default.TryGetData(episodeCid, out IncrementalLoadingCollection<EpisodePageSource, PageDetail> pages))
+        if (MemoryCacheHelper<IncrementalLoadingCollection<EpisodePageSource, PageDetailWrapper>>.Default.TryGetData(episodeCid, out IncrementalLoadingCollection<EpisodePageSource, PageDetailWrapper> pages))
         {
             Pages = pages;
         }
         else
         {
             EpisodePageSource source = new(comicDetail, episodeCid, CurrentEpisodeDetail);
-            Pages = new IncrementalLoadingCollection<EpisodePageSource, PageDetail>(source, 5);
+            Pages = new IncrementalLoadingCollection<EpisodePageSource, PageDetailWrapper>(source, 5);
 
-            MemoryCacheHelper<IncrementalLoadingCollection<EpisodePageSource, PageDetail>>.Default.Store(episodeCid, Pages);
+            MemoryCacheHelper<IncrementalLoadingCollection<EpisodePageSource, PageDetailWrapper>>.Default.Store(episodeCid, Pages);
         }
 
         CurrentComic = comicDetail;
@@ -168,13 +168,18 @@ public sealed partial class EpisodeReadViewModel : ObservableObject
     }
 }
 
-public sealed class EpisodePageSource(ComicDetail comicDetail, string episodeCid, EpisodeDetail episodeDetail) : IIncrementalSource<PageDetail>
+public sealed class EpisodePageSource(ComicDetail comicDetail, string episodeCid, EpisodeDetail episodeDetail) : IIncrementalSource<PageDetailWrapper>
 {
     private readonly SemaphoreSlim _mutex = new(1);
     private bool isEnd = false;
-    private readonly List<PageDetail> _pages = new(episodeDetail.PageInfos.Count);
+    private readonly List<PageDetailWrapper> _pages = new(episodeDetail.PageInfos.Count);
 
-    public async Task<IEnumerable<PageDetail>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+    ~EpisodePageSource()
+    {
+        _mutex.Dispose();
+    }
+
+    public async Task<IEnumerable<PageDetailWrapper>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
     {
         if (isEnd)
         {
@@ -195,8 +200,9 @@ public sealed class EpisodePageSource(ComicDetail comicDetail, string episodeCid
 
                 for (int i = 1; i <= pageCount; i++)
                 {
-                    PageDetail pageDetail = await EpisodeAndPageService.GetPageDetailAsync(comicDetail.Cid, episodeCid, i);
-                    _pages.Add(pageDetail);
+                    PageDetailWrapper wrapper = new(comicDetail.Cid, episodeCid, i);
+                    _ = wrapper.TryInitialize();
+                    _pages.Add(wrapper);
                 }
 
                 if (predicate)
@@ -208,8 +214,9 @@ public sealed class EpisodePageSource(ComicDetail comicDetail, string episodeCid
             {
                 for (int i = _pages.Count + 1; i <= totalPageCount; i++)
                 {
-                    PageDetail pageDetail = await EpisodeAndPageService.GetPageDetailAsync(comicDetail.Cid, episodeCid, i);
-                    _pages.Add(pageDetail);
+                    PageDetailWrapper wrapper = new(comicDetail.Cid, episodeCid, i);
+                    _ = wrapper.TryInitialize();
+                    _pages.Add(wrapper);
                 }
                 isEnd = true;
             }
@@ -217,8 +224,9 @@ public sealed class EpisodePageSource(ComicDetail comicDetail, string episodeCid
             {
                 for (int i = _pages.Count + 1; i <= totalLoadCount; i++)
                 {
-                    PageDetail pageDetail = await EpisodeAndPageService.GetPageDetailAsync(comicDetail.Cid, episodeCid, i);
-                    _pages.Add(pageDetail);
+                    PageDetailWrapper wrapper = new(comicDetail.Cid, episodeCid, i);
+                    _ = wrapper.TryInitialize();
+                    _pages.Add(wrapper);
                 }
             }
 

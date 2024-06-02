@@ -137,6 +137,7 @@
     <Compile Include="Models\AppBackgroundMode.cs" />
     <Compile Include="Models\AppColorTheme.cs" />
     <Compile Include="Models\ErrorInfo.cs" />
+    <Compile Include="Models\PageDetailWrapper.cs" />
     <Compile Include="ViewModels\ComicDetailViewModel.cs" />
     <Compile Include="ViewModels\ComicListViewModel.cs" />
     <Compile Include="ViewModels\EpisodeReadViewModel.cs" />
@@ -218,6 +219,11 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
       <Version>8.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="IsExternalInit">
+      <Version>1.0.3</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
