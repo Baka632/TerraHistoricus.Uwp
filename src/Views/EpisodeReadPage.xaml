@@ -113,13 +113,13 @@
                                     VerticalAlignment="Center"
                                     Visibility="{x:Bind helpers:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
                                     <TextBlock
+                                        x:Uid="AnErrorOccurred"
                                         Margin="0,0,0,10"
-                                        VerticalAlignment="Center"
-                                        Text="出错了。" />
+                                        VerticalAlignment="Center" />
                                     <Button
+                                        x:Uid="ReloadButton"
                                         VerticalAlignment="Center"
-                                        Command="{x:Bind RetryInitialzationCommand}"
-                                        Content="重新加载" />
+                                        Command="{x:Bind RetryInitialzationCommand}" />
                                 </StackPanel>
                                 <ProgressRing
                                     Width="50"
@@ -195,7 +195,7 @@
                             BorderBrush="Gray"
                             BorderThickness="0.6" />
                         <TextBlock Grid.Row="3" Foreground="#8f8f8f">
-                            <Run Text="此话更新日期：" />
+                            <Run x:Uid="UpdatedOnTextRun" />
                             <Run Text="{x:Bind helpersEx:XamlHelperEx.ToDateString(ViewModel.CurrentEpisodeInfo.DisplayTimestamp, 'yyyy/M/d'),Mode=OneWay}" />
                         </TextBlock>
                     </Grid>
@@ -210,13 +210,13 @@
                             Command="{x:Bind ViewModel.ToPreviousEpisodeCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <SymbolIcon Margin="0,0,5,0" Symbol="Back" />
-                                <TextBlock Text="上一话" />
+                                <TextBlock x:Uid="PreviousEpisode" />
                             </StackPanel>
                         </Button>
                         <Button Background="Transparent" Command="{x:Bind ViewModel.ToNextEpisodeCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <SymbolIcon Margin="0,0,5,0" Symbol="Forward" />
-                                <TextBlock Text="下一话" />
+                                <TextBlock x:Uid="NextEpisode" />
                             </StackPanel>
                         </Button>
                     </StackPanel>

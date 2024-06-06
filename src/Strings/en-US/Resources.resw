@@ -78,4 +78,19 @@
   <data name="ReadFirstEpisode.Text" xml:space="preserve">
     <value>Read the first episode</value>
   </data>
+  <data name="AnErrorOccurred.Text" xml:space="preserve">
+    <value>An error occurred</value>
+  </data>
+  <data name="ReloadButton.Content" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="UpdatedOnTextRun.Text" xml:space="preserve">
+    <value>Updated on:</value>
+  </data>
+  <data name="PreviousEpisode.Text" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="NextEpisode.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
 </root>

@@ -78,4 +78,19 @@
   <data name="ReadFirstEpisode.Text" xml:space="preserve">
     <value>阅读第一话</value>
   </data>
+  <data name="AnErrorOccurred.Text" xml:space="preserve">
+    <value>出错了</value>
+  </data>
+  <data name="ReloadButton.Content" xml:space="preserve">
+    <value>重新加载</value>
+  </data>
+  <data name="UpdatedOnTextRun.Text" xml:space="preserve">
+    <value>此话更新日期：</value>
+  </data>
+  <data name="PreviousEpisode.Text" xml:space="preserve">
+    <value>上一话</value>
+  </data>
+  <data name="NextEpisode.Text" xml:space="preserve">
+    <value>下一话</value>
+  </data>
 </root>
