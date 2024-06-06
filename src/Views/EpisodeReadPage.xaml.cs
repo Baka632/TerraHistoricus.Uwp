@@ -11,8 +11,13 @@ namespace TerraHistoricus.Uwp.Views;
 /// </summary>
 public sealed partial class EpisodeReadPage : Page
 {
+    private const float ImageScrollViewerZoomFactorDelta = 0.1f;
+
     [ObservableProperty]
     private ScrollViewer listViewerScrollViewer;
+
+    public bool CanZoomOut => ListViewerScrollViewer != null && MathF.Abs(ListViewerScrollViewer.ZoomFactor - ListViewerScrollViewer.MinZoomFactor) > 0.01f;
+    public bool CanZoomIn => ListViewerScrollViewer != null && MathF.Abs(ListViewerScrollViewer.MaxZoomFactor - ListViewerScrollViewer.ZoomFactor) > 0.01f;
 
     public EpisodeReadViewModel ViewModel { get; } = new EpisodeReadViewModel();
 
@@ -33,6 +38,16 @@ public sealed partial class EpisodeReadPage : Page
         else if (e.Parameter is ValueTuple<string, string> cidData)
         {
             await ViewModel.Initialize(cidData.Item1, cidData.Item2);
+        }
+    }
+
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+    {
+        base.OnNavigatingFrom(e);
+
+        if (ListViewerScrollViewer is not null)
+        {
+            ListViewerScrollViewer.ViewChanged -= OnListViewerScrollViewerViewChanged;
         }
     }
 
@@ -95,6 +110,42 @@ public sealed partial class EpisodeReadPage : Page
             listviewScrollViewer.MinZoomFactor = 0.5f;
             listviewScrollViewer.MaxZoomFactor = 2f;
             ListViewerScrollViewer = listviewScrollViewer;
+            OnPropertyChanged(nameof(CanZoomIn));
+            OnPropertyChanged(nameof(CanZoomOut));
+            ListViewerScrollViewer.ViewChanged += OnListViewerScrollViewerViewChanged;
         }
+    }
+
+    private void OnListViewerScrollViewerViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+    {
+        if (e.IsIntermediate != true)
+        {
+            OnPropertyChanged(nameof(CanZoomIn));
+            OnPropertyChanged(nameof(CanZoomOut));
+        }
+    }
+
+    private void OnZoomOutButtonClicked(object sender, RoutedEventArgs e)
+    {
+        float zoomFactor = ListViewerScrollViewer.ZoomFactor - ImageScrollViewerZoomFactorDelta;
+
+        if (zoomFactor < ListViewerScrollViewer.MinZoomFactor)
+        {
+            zoomFactor = ListViewerScrollViewer.MinZoomFactor;
+        }
+
+        ListViewerScrollViewer?.ChangeView(null, null, zoomFactor);
+    }
+
+    private void OnZoomInButtonClicked(object sender, RoutedEventArgs e)
+    {
+        float zoomFactor = ListViewerScrollViewer.ZoomFactor + ImageScrollViewerZoomFactorDelta;
+
+        if (zoomFactor > ListViewerScrollViewer.MaxZoomFactor)
+        {
+            zoomFactor = ListViewerScrollViewer.MaxZoomFactor;
+        }
+
+        ListViewerScrollViewer?.ChangeView(null, null, zoomFactor);
     }
 }

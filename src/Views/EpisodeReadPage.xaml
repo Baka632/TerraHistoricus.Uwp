@@ -275,7 +275,7 @@
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
                         <StackPanel.Resources>
-                            <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+                            <Style BasedOn="{StaticResource DefaultRepeatButtonStyle}" TargetType="RepeatButton">
                                 <Setter Property="Height" Value="35" />
                                 <Setter Property="Width" Value="35" />
                                 <Setter Property="VerticalAlignment" Value="Center" />
@@ -284,16 +284,16 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <Button>
+                        <RepeatButton Click="OnZoomOutButtonClicked" IsEnabled="{x:Bind CanZoomOut, Mode=OneWay}">
                             <SymbolIcon Symbol="Remove" />
-                        </Button>
+                        </RepeatButton>
                         <TextBlock
                             Margin="5,0,5,0"
                             VerticalAlignment="Center"
                             Text="{x:Bind x:String.Format('{0:P1}', ListViewerScrollViewer.ZoomFactor), Mode=OneWay}" />
-                        <Button>
+                        <RepeatButton Click="OnZoomInButtonClicked" IsEnabled="{x:Bind CanZoomIn, Mode=OneWay}">
                             <SymbolIcon Symbol="Add" />
-                        </Button>
+                        </RepeatButton>
                     </StackPanel>
                 </Grid>
             </Grid>
